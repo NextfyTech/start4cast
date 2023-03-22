@@ -2,8 +2,9 @@
 
 @section('content')
 
-<form action="{{route('category.data_index')}}" method="POST" enctype="multipart/form-data">
-  @csrf
+<form class="form-horizontal" action="{{route('category.data_index')}}" method="POST" enctype="multipart/form-data">
+    <h3>Add Data - Special Categories</h3>
+    @csrf
  <fieldset>
   <legend>Add Data - Special Categories</legend>
   @if (count($errors) > 0)
@@ -21,19 +22,22 @@
     {{ session('success') }}
   </div>
 @endif
-
-<label for="category">Category</label>
-<select id="category" name="spl_category_id"><br><br> 
-<option>--select--</option>
-@foreach($spl_category as $list)
+  <div class="form-group">
+  <label for="Category">Category:</label>
+      <select id="category" name="spl_category_id" class="form-control">
+        <option selected>Choose...</option>
+        @foreach($spl_category as $list)
 <option value="{{$list['spl_category_id']}}">{{$list['spl_category']}}</option>
 @endforeach
-</select><br><br>
-<label for="year">Year</label>
-<select id="year" name="timePeriod"><br><br>
-<option>--select--</option>
-<option value="2013-01-01#2013-12-31">2013</option>
-<option value="2014-01-01#2014-12-31">2014</option>
+      </select>
+    
+  </div>
+  <div class="form-group">
+  <label for="year">Year:</label>
+  <select id="year" name="timePeriod" class="form-control">
+  <option selected>Choose...</option>
+<option value="2013-01-01">2013</option>
+<!-- <option value="2014-01-01#2014-12-31">2014</option>
 <option value="2015-01-01#2015-12-31">2015</option>
 <option value="2016-01-01#2016-12-31">2016</option>
 <option value="2017-01-01#2017-12-31">2017</option>
@@ -52,41 +56,12 @@
 <option value="2030-01-01#2030-12-31">2030</option>
 <option value="2031-01-01#2031-12-31">2031</option>
 <option value="2032-01-01#2032-12-31">2032</option>
-<option value="2033-01-01#2033-12-31">2033</option>
-</select><br><br>
-<label for="myfile">Data File:</label>
-<input type="file" name="file" id="myfile" multiple><br><br>
-
-<button type="submit">submit</button>
-
-
-
-</fieldset>
-
-<form class="form-horizontal" action="/action_page.php">
-    <h3>Add Data - Special Categories</h3>
-  <div class="form-group">
-  <label for="Category">Category:</label>
-      <select id="category" class="form-control">
-        <option selected>Choose...</option>
-        <option>Health</option>
-        <option>Wealth</option>
-      </select>
-    
-  </div>
-  <div class="form-group">
-  <label for="year">Year:</label>
-      <select id="year" class="form-control">
-        <option selected>Choose...</option>
-        <option>2012</option>
-        <option>2013</option>
-        <option>2014</option>
-        <option>2015</option>
+<option value="2033-01-01#2033-12-31">2033</option> -->
       </select>
   </div>
   <div  class="form-group mb-3">
   <label for="formFile" class="form-label">Data File</label>
-  <input class="form-control" type="file" id="formFile">
+  <input class="form-control" name="csv_file" type="file" id="csv_file">
 </div>
 <button class="btn btn-primary" type="submit">Submit form</button>
 

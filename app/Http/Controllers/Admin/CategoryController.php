@@ -19,6 +19,7 @@ class CategoryController extends Controller
         $spl_category = SplCategories::all();
         if ($request->isMethod('post')) 
         {
+            dd($request);
             $validate = $this->validate($request, [
             'spl_category_id' => 'required',
 
@@ -27,11 +28,11 @@ class CategoryController extends Controller
         
         $spl_data = new SplData();
         $spl_data->spl_category_id = $request->spl_category_id;
-        $spl_data->spl_date_from = explode(" ", $request->timePeriod[0]);
-        $spl_data->spl_date_to = explode(" ", $request->timePeriod[1]);
-        //$spl_data->spl_date_from = $spl_date_to;
-        //$spl_data->spl_date_to = $request->timePeriod;
-        Excel::import(new SplDataImport, $request->file('file'));
+        // $spl_data->spl_date_from = explode(" ", $request->timePeriod[0]);
+        // $spl_data->spl_date_to = explode(" ", $request->timePeriod[1]);
+        $spl_data->spl_date_from = $request->timePeriod;
+        $spl_data->spl_date_to = $request->timePeriod;
+        Excel::import(new SplDataImport, $request->file('csv_file'));
         $spl_data->save();
         return redirect('/category')->with('success', 'Data Added!');
         }
