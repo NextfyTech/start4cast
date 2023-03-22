@@ -44,7 +44,7 @@
       <div class=" row">
     <label for="specialCategory" class="col-sm-4">Special Category:</label>
     <div class="col">
-      <input type="text" class="form-control" id="specialCategory" value="">
+      <input type="text" class="form-control" name="spl_category" id="spl_category" value="">
     </div>
   </div>
 

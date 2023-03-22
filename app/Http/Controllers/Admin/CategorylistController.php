@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Admin\Categorylist;
 
-class Categorylist extends Controller
+class CategorylistController extends Controller
 {
     public function index()
     {
@@ -15,12 +16,8 @@ class Categorylist extends Controller
     public function store(Request $request){
         $request->validate(
             [
-             'profile_name'=>'required',
-             'image'=>'required',
-             'email'=>'required|email',
-            
-             'PCN'=>'required',
-             'ACN'=>'required',
+             'spl_category'=>'required',
+             
             ]
             );
         
@@ -28,12 +25,12 @@ class Categorylist extends Controller
 
 
         $data=new Categorylist();
-        $data->profile_name=$request->input('profile_name');
        
-        $data->email=$request->input('email');
+        $data->	spl_category=$request->input('spl_category');
         
         $data->save();
-        return view('welcome')->with('message','success!');
+      
+        return Redirect::back()->with('msg', 'success');
 
     }
 }

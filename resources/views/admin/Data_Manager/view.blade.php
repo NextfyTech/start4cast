@@ -4,15 +4,7 @@
 
 <form class="form-horizontal" action="/action_page.php">
     <h3>View Special Data - Data Manage</h3>
-  <div class="form-group">
-  <label for="Category">Category:</label>
-      <select id="category" class="form-control">
-        <option selected>Choose...</option>
-        <option>Health</option>
-        <option>Wealth</option>
-      </select>
-    
-  </div>
+ 
 
   <div class="form-group">
   <label for="starSign">Select Star Sign:</label>
@@ -25,16 +17,23 @@
     
 </div>
 
-  <div class="form-group">
-  <label for="year">Year:</label>
-      <select id="year" class="form-control">
+<div class="form-group">
+  <label for="selctType">Select Type:</label>
+      <select id="selctTyp" class="form-control">
         <option selected>Choose...</option>
-        <option>2012</option>
-        <option>2013</option>
-        <option>2014</option>
-        <option>2015</option>
+        <option>Daily</option>
+        <option>Weekly</option>
+        <option>Monthly</option>
+        <option>Yearly</option>
       </select>
+    
   </div>
+
+  <div class="form-group">
+    <label for="day" class="col-sm-4">Day:</label>
+    
+      <input type="date" class="form-control" id="day" value="">
+    </div>
   
 <button class="btn btn-primary" type="submit">Search</button>
 </form>
