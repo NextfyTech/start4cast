@@ -32,6 +32,23 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
+                    <span>Data Manager</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="{{route('Data_Manager.daily')}}">Daily</a>
+                        <a class="collapse-item" href="{{route('Data_Manager.weekly')}}">Weekly</a>
+                        <a class="collapse-item" href="{{route('Data_Manager.monthly')}}">Monthly</a>
+                        <a class="collapse-item" href="{{route('Data_Manager.yearly')}}">Yearly</a>
+                        <a class="collapse-item" href="{{route('Data_Manager.view')}}">View Data</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fas fa-fw fa-cog"></i>
                     <span>Special Category</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -47,11 +64,11 @@
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
-                    <span>Star Sign Master</span>
+                    <span>Star Sign Manager</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="{{route('star_sign_master.index')}}">Category</a>
+                        <a class="collapse-item" href="{{route('star_sign_master.index')}}">Star Sign Mastar</a>
                     </div>
                 </div>
             </li>
