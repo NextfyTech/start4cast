@@ -39,7 +39,8 @@
         </button>
       </div>
       <div class="modal-body">
-      <form class="form-horizontal" action="/action_page.php">
+      <form class="form-horizontal" action="{{route('addData')}}">
+      {{ csrf_field() }}
       <div class=" row">
     <label for="specialCategory" class="col-sm-4">Special Category:</label>
     <div class="col">

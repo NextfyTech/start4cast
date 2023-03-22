@@ -26,6 +26,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
 /*-----------------------------------category List-----------------------------------------*/
 Route::get('/categorylist', [App\Http\Controllers\Admin\Categorylist::class, 'index'])->name('category.list');
+Route::get('adddata', [Categorylist::class,'store'])->name('addData');
+Route::post('add', 'Categorylist@add');
 
 /*------------------------------------ViewData----------------------------------------------------------*/
 
