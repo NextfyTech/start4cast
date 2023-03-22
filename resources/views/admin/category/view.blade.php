@@ -3,7 +3,7 @@
 @section('content')
 
 <form class="form-horizontal" action="/action_page.php">
-    <h3>Add Data - Special Categories</h3>
+    <h3>View Special Data - Data Manage</h3>
   <div class="form-group">
   <label for="Category">Category:</label>
       <select id="category" class="form-control">
@@ -13,6 +13,18 @@
       </select>
     
   </div>
+
+  <div class="form-group">
+  <label for="starSign">Select Star Sign:</label>
+      <select id="starSign" class="form-control">
+        <option selected>All</option>
+        <option>Aries</option>
+        <option>Taurus</option>
+        <option>Gemini</option>
+      </select>
+    
+</div>
+
   <div class="form-group">
   <label for="year">Year:</label>
       <select id="year" class="form-control">
@@ -23,10 +35,27 @@
         <option>2015</option>
       </select>
   </div>
-  <div  class="form-group mb-3">
-  <label for="formFile" class="form-label">Default file input example</label>
-  <input class="form-control" type="file" id="formFile">
-</div>
+  
 <button class="btn btn-primary" type="submit">Submit form</button>
 </form>
+<hr>
+<table class="table">
+    <thead>
+      <tr>
+        <th>Data From</th>
+        <th>Data To</th>
+        <th>Star Sign</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td>1</td>
+        <td>Health</td>
+        <td>abcd</td>
+      </tr>
+      
+    </tbody>
+  </table>
 @endsection

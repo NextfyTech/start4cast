@@ -22,8 +22,14 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
+/*------------------------------------Add Data----------------------------------------------------------*/
 Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
+/*-----------------------------------category List-----------------------------------------*/
+Route::get('/categorylist', [App\Http\Controllers\Admin\Categorylist::class, 'index'])->name('category.list');
+
+/*------------------------------------ViewData----------------------------------------------------------*/
+
+Route::get('/viewdata', [App\Http\Controllers\Admin\ViewController::class, 'index'])->name('category.view');
 
 Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterController::class, 'index'])->name('star_sign_master.index');
 
