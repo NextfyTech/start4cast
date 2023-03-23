@@ -30,7 +30,7 @@ class CategorylistController extends Controller
         
         $data->save();
       
-        return Redirect::back()->with('msg', 'success');
+       return redirect("/categorylist")->with('msg', 'success');
 
     }
 }

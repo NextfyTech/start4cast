@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin as AdminController;
+use App\Http\Controllers\Admin\CategorylistController;
 
 
 /*
@@ -26,7 +27,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
 /*-----------------------------------category List-----------------------------------------*/
 Route::get('/categorylist', [App\Http\Controllers\Admin\CategorylistController::class, 'index'])->name('category.list');
-Route::get('adddata', [Categorylist::class,'store'])->name('addData');
+Route::get('adddata', [CategorylistController::class,'store'])->name('addData');
 Route::post('add', 'Categorylist@add');
 
 /*------------------------------------ViewData----------------------------------------------------------*/
