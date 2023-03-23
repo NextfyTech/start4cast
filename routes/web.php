@@ -27,7 +27,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::any('/category', [App\Http\Controllers\Admin\CategoryController::class, 'data_index'])->name('category.data_index');
 
 /*------------------------------------Add Data----------------------------------------------------------*/
-// Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
+ //Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
 /*-----------------------------------category List-----------------------------------------*/
 Route::get('/categorylist', [App\Http\Controllers\Admin\CategorylistController::class, 'index'])->name('category.list');
 Route::get('adddata', [CategorylistController::class,'store'])->name('addData');

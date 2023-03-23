@@ -11,4 +11,11 @@ class ViewController extends Controller
     {
         return view('admin.category.view');
     }
+
+    public function view(){
+        $data=Categorylist::all();
+        $view=compact('data');
+        return redirect('/categorylist')->with($view);
+
+    }
 }

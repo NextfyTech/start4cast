@@ -14,10 +14,15 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>Health</td>
+      
+      @foreach($data as $value)
+                <tr>
+                    
+                    
+                <td>{{$value->spl_category_id}}</td>
+                    <td>{{$value->spl_category}}</td>
+               
+               
         <td>
 				<a  href="" class="edit_btn" name="edit_btn" ><i class='far fa-edit' style='font-size:18px'></i></a>
 			
@@ -25,7 +30,7 @@
 				<a href=""  class="del_btn" name="del_btn"><i class='far fa-trash-alt' style='font-size:18px'></i></a>
 			</td>
       </tr>
-      
+      @endforeach
     </tbody>
   </table>
 
