@@ -22,9 +22,22 @@ class CategoryController extends Controller
             $validate = $this->validate($request, [
                 'spl_category_id' => 'required',
             ]);
-            $time_period = explode('#', $request->timePeriod);
+            //$spl_data = new SplData();
+            SplData::create([
+                'spl_category_id' => $request->day,
+                'spl_date_from' => explode('#', $request->timePeriod),
+                'data' => Excel::import(new SplDataImport,$request->file('csv_file')),
+            ]);
+            // $spl_data->spl_category_id = $request->spl_category_id;
+            // $spl_data = explode('#', $request->timePeriod);
 //            $import = new SplDataImport;
-            Excel::import(new SplDataImport,$request->file('csv_file'));
+            // Excel::import(new SplDataImport,$request->file('csv_file'));
+            // if($spl_data->save()){
+            //     return redirect('/category')->with('success', 'Data Added!');
+            // }else{
+            //     return redirect('/category')->with('error', 'Data failed!');
+            // }
+        
 //            $path = $request->file('csv_file')->getRealPath();
 //            $path1 = $request->file('csv_file')->store('temp');
 //            $path=storage_path('app').'/'.$path1;
@@ -40,7 +53,6 @@ class CategoryController extends Controller
 //            dd($request->file('csv_file')->getClientOriginalExtension());
 //            Excel::import(new SplDataImport(),$request->file('csv_file.csv'));
 //            $spl_data->save();
-            return redirect('/category')->with('success', 'Data Added!');
         }
         return view('admin.category.add', compact('spl_category'));
     }

@@ -38,7 +38,7 @@ Route::post('add', 'Categorylist@add');
 Route::get('/viewdata', [App\Http\Controllers\Admin\ViewController::class, 'index'])->name('category.view');
 
 
-Route::get('/daily', [App\Http\Controllers\Admin\dailyController::class, 'index'])->name('Data_Manager.daily');
+Route::any('/daily', [App\Http\Controllers\Admin\dailyController::class, 'index'])->name('Data_Manager.daily');
 Route::get('/weekly', [App\Http\Controllers\Admin\weeklyController::class, 'index'])->name('Data_Manager.weekly');
 Route::get('/monthly', [App\Http\Controllers\Admin\monthlyController::class, 'index'])->name('Data_Manager.monthly');
 Route::get('/yearly', [App\Http\Controllers\Admin\yearlyController::class, 'index'])->name('Data_Manager.yearly');

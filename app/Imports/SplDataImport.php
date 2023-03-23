@@ -30,8 +30,8 @@ class SplDataImport implements WithHeadingRow, ToModel
     {
         foreach ($rows as $row){
             SplData::create([
-               'data' => $row['data'],
-               'starsign_id' => $row['starsign_id']
+               'data' => $rows['data_txt'],
+               'starsign_id' => $rows['starsign_id']
             ]);
         }
     }
