@@ -8,8 +8,10 @@
   <label for="Category">Category:</label>
       <select id="category" class="form-control">
         <option selected>Choose...</option>
-        <option>Health</option>
-        <option>Wealth</option>
+        @foreach($category_list as $master)
+        <option value="{{$master['spl_category_id']}}">{{$master->spl_category}}</option>
+      @endforeach
+        
       </select>
     
   </div>
@@ -18,9 +20,9 @@
   <label for="starSign">Select Star Sign:</label>
       <select id="starSign" class="form-control">
         <option selected>All</option>
-        <option>Aries</option>
-        <option>Taurus</option>
-        <option>Gemini</option>
+        @foreach($star_sign_master as $master)
+        <option value="{{$master['id']}}">{{$master->starsign}}</option>
+      @endforeach
       </select>
     
 </div>
@@ -29,10 +31,7 @@
   <label for="year">Year:</label>
       <select id="year" class="form-control">
         <option selected>Choose...</option>
-        <option>2012</option>
-        <option>2013</option>
-        <option>2014</option>
-        <option>2015</option>
+        
       </select>
   </div>
   
@@ -58,4 +57,7 @@
       
     </tbody>
   </table>
+
+  <script>
+    
 @endsection

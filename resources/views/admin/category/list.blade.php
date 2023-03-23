@@ -1,13 +1,29 @@
 @extends('home')
 
 @section('content')
+@if (count($errors) > 0)
+  @foreach ($errors->all() as $error)
+  <p class="alert alert-danger">{{ $error}}  </p>
+  @endforeach
+  @endif
+  @if (session('error'))
+  <div class="alert alert-danger" role="alert">
+    {{ session('error') }}
+  </div>
+  @endif
+  @if (session('success'))
+  <div class="alert alert-success" role="alert">
+    {{ session('success') }}
+  </div>
+@endif
 <button type="button" class="btn btn-primary mb-3" data-toggle="modal" data-target="#exampleModalCenter" style="float:right">
   Add Data
 </button>
 <table class="table" id="table1">
+  
     <thead>
       <tr>
-        <th>Sr. No.</th>
+        
         <th>ID</th>
         <th>Special Category</th>
         <th>Actions</th>
@@ -20,14 +36,14 @@
                     
                     
                 <td>{{$value->spl_category_id}}</td>
-                    <td>{{$value->spl_category}}</td>
+                <td>{{$value->spl_category}}</td>
                
                
         <td>
-				<a  href="" class="edit_btn" name="edit_btn" ><i class='far fa-edit' style='font-size:18px'></i></a>
+				<a  href="{{ url('edit/'.$value->spl_category_id) }}" class="edit_btn" name="edit_btn" ><i class='far fa-edit' style='font-size:18px'></i></a>
 			
 			
-				<a href=""  class="del_btn" name="del_btn"><i class='far fa-trash-alt' style='font-size:18px'></i></a>
+				<a href="{{url('/delete',['id' => $value->spl_category_id])}}" onclick="return confirm('Are you sure?')"  class="del_btn" name="del_btn"><i class='far fa-trash-alt' style='font-size:18px'></i></a>
 			</td>
       </tr>
       @endforeach
@@ -60,7 +76,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        
       </div>
     </div>
   </div>
