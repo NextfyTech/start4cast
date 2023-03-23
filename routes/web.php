@@ -23,8 +23,11 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::any('/category', [App\Http\Controllers\Admin\CategoryController::class, 'data_index'])->name('category.data_index');
+
 /*------------------------------------Add Data----------------------------------------------------------*/
-Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
+// Route::get('/category', [App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('category.add');
 /*-----------------------------------category List-----------------------------------------*/
 Route::get('/categorylist', [App\Http\Controllers\Admin\CategorylistController::class, 'index'])->name('category.list');
 Route::get('adddata', [CategorylistController::class,'store'])->name('addData');
@@ -40,6 +43,7 @@ Route::get('/weekly', [App\Http\Controllers\Admin\weeklyController::class, 'inde
 Route::get('/monthly', [App\Http\Controllers\Admin\monthlyController::class, 'index'])->name('Data_Manager.monthly');
 Route::get('/yearly', [App\Http\Controllers\Admin\yearlyController::class, 'index'])->name('Data_Manager.yearly');
 Route::get('/view', [App\Http\Controllers\Admin\viewDataController::class, 'index'])->name('Data_Manager.view');
+
 
 Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterController::class, 'index'])->name('star_sign_master.index');
 
