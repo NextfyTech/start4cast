@@ -19,7 +19,6 @@ class CategoryController extends Controller
         $spl_category = SplCategories::all();
         if ($request->isMethod('post')) 
         {
-            dd($request);
             $validate = $this->validate($request, [
             'spl_category_id' => 'required',
 
