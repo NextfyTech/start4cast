@@ -30,14 +30,14 @@
 <option value="{{$list['spl_category_id']}}">{{$list['spl_category']}}</option>
 @endforeach
       </select>
-    
+
   </div>
   <div class="form-group">
   <label for="year">Year:</label>
   <select id="year" name="timePeriod" class="form-control">
   <option selected>Choose...</option>
 <option value="2013-01-01">2013</option>
-<!-- <option value="2014-01-01#2014-12-31">2014</option>
+ <option value="2014-01-01#2014-12-31">2014</option>
 <option value="2015-01-01#2015-12-31">2015</option>
 <option value="2016-01-01#2016-12-31">2016</option>
 <option value="2017-01-01#2017-12-31">2017</option>
@@ -56,7 +56,7 @@
 <option value="2030-01-01#2030-12-31">2030</option>
 <option value="2031-01-01#2031-12-31">2031</option>
 <option value="2032-01-01#2032-12-31">2032</option>
-<option value="2033-01-01#2033-12-31">2033</option> -->
+<option value="2033-01-01#2033-12-31">2033</option>
       </select>
   </div>
   <div  class="form-group mb-3">
