@@ -34,5 +34,11 @@
  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-
+<script>
+    var dropbox=document.getElementById('year');
+    var array=[2010,2012,2013,2014,2015,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027];
+    for(var i=0;i<array.length;i++){
+        dropbox.options.add(new Option(array[i]));
+    }
+</script>
 </body>
