@@ -18,11 +18,12 @@ class dailyController extends Controller
             $validate = $this->validate($request, [
                 'data_upload' => 'required',
             ]);
-            StarSignData::create([
-                'date_from' => $request->day,
-                'data_type' => 'day',
-                'data_upload' => Excel::import(new SplDataImport,$request->file('data_upload')),
-            ]); 
+            Excel::import(new SplDataImport,$request->file('data_upload'))
+            // StarSignData::create([
+            //     'date_from' => $request->day,
+            //     'data_type' => 'day',
+            //     'data_upload' => ,
+            // ]); 
         }
         return view('admin.Data_Manager.daily');
     }

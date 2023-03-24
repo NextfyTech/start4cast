@@ -45,7 +45,7 @@
                 </a>
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
+                        <h6 class="collapse-header">Data Manager:</h6>
                         <a class="collapse-item" href="{{route('Data_Manager.daily')}}">Daily</a>
                         <a class="collapse-item" href="{{route('Data_Manager.weekly')}}">Weekly</a>
                         <a class="collapse-item" href="{{route('Data_Manager.monthly')}}">Monthly</a>
