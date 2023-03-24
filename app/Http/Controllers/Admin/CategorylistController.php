@@ -61,6 +61,6 @@ class CategorylistController extends Controller
     public function delete(Request $request, $spl_category_id)
     {
         $res=Categorylist::where('spl_category_id',$spl_category_id)->delete();
-        return redirect('/categorylist')->with('success', 'stock deleted Successfully!.');
+        return redirect('/categorylist')->with('success', 'category deleted Successfully!.');
     }
 }
