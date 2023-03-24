@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin as AdminController;
 use App\Http\Controllers\Admin\CategorylistController;
+use App\Http\Controllers\Admin\ViewController;
 
 
 /*
@@ -37,6 +38,7 @@ Route::get('/viewdata', [CategorylistController::class,'view'])->name('viewData'
 Route::any('/edit/{id}', [CategorylistController::class,'edit'])->name('edit');
     Route::any('/update/{id}', [CategorylistController::class,'update'])->name('update');
 Route::get('/delete/{id}', [CategorylistController::class,'delete']);
+Route::get('/search', [ViewController::class,'search'])->name('search');
 
 /*------------------------------------ViewData----------------------------------------------------------*/
 

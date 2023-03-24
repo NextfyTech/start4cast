@@ -9,7 +9,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{{route('home')}}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -74,5 +74,11 @@
                     </div>
                 </div>
             </li>
+
+          
+
+            
+
+
         </ul>
         <!-- End of Sidebar -->

@@ -20,7 +20,7 @@
   Add Data
 </button>
 <table class="table" id="table1">
-  
+  <h3>Horoscope - Special Categories<h3>
     <thead>
       <tr>
         
@@ -71,13 +71,14 @@
 
       
   
-<button class="btn btn-primary" type="submit">Submit form</button>
-</form>
+
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        
+        <button class="btn btn-primary" type="submit">Submit form</button>
       </div>
+      </form>
     </div>
   </div>
 </div>
