@@ -10,5 +10,5 @@ class SplData extends Model
     protected $table = 'horosco_spl_data';
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $guarded = [];
 }

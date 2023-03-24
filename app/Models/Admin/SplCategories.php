@@ -9,4 +9,5 @@ class SplCategories extends Model
 {
     protected $table = 'horosco_spl_categories';
     use HasFactory;
+    protected $guarded = [];
 }
