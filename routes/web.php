@@ -50,7 +50,6 @@ Route::any('/weekly', [App\Http\Controllers\Admin\weeklyController::class, 'inde
 Route::any('/monthly', [App\Http\Controllers\Admin\monthlyController::class, 'index'])->name('Data_Manager.monthly');
 Route::any('/yearly', [App\Http\Controllers\Admin\yearlyController::class, 'index'])->name('Data_Manager.yearly');
 Route::get('/view', [App\Http\Controllers\Admin\viewDataController::class, 'index'])->name('Data_Manager.view');
-Route::get('/searchSpecialData', [App\Http\Controllers\Admin\viewDataController::class, 'search'])->name('searchSpecialData');
 
 
 Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterController::class, 'index'])->name('star_sign_master.index');

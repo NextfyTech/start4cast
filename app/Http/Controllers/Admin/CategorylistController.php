@@ -41,6 +41,7 @@ class CategorylistController extends Controller
     public function edit($spl_category_id)
     {
         $data =  Categorylist::where('spl_category_id',$spl_category_id)->first();
+        dd($data);
         return view('admin.category.edit', compact('data'));
     }
   
@@ -54,7 +55,7 @@ class CategorylistController extends Controller
         Categorylist::where('spl_category_id',$spl_category_id)->update([
             'spl_category' => $request->get('spl_category')
         ]);
-        return redirect('/categorylist')->with('status','data Updated Successfully');
+        return redirect('/categorylist')->with('success','data Updated Successfully');
     }
 
 
