@@ -2,24 +2,23 @@
 
 @section('content')
 
-<form class="form-horizontal" action="/action_page.php">
+<form class="form-horizontal" action="{{route('searchSpecialData')}}">
     <h3>View Special Data - Data Manage</h3>
  
 
-  <div class="form-group">
+    <div class="form-group">
   <label for="starSign">Select Star Sign:</label>
-      <select id="starSign" class="form-control">
-        <option selected>All</option>
-        <option>Aries</option>
-        <option>Taurus</option>
-        <option>Gemini</option>
+      <select id="starSign" name='starsign_id' class="form-control">
+        @foreach($star_sign_master as $master)
+        <option value="{{$master['starsign_id']}}">{{$master->starsign}}</option>
+      @endforeach
       </select>
     
-</div>
+</div>  
 
 <div class="form-group">
   <label for="selctType">Select Type:</label>
-      <select id="selctTyp" class="form-control">
+      <select id="selctTyp" name="data_type" class="form-control">
         <option selected>Choose...</option>
         <option>Daily</option>
         <option>Weekly</option>
@@ -48,13 +47,19 @@
       </tr>
     </thead>
     <tbody>
+      @if(isset($data))
+      @foreach($data as $d)
       <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>Health</td>
-        <td>abcd</td>
+        <td>{{ $d->spl_date_from }}</td>
+        <td>{{ $d->spl_date_to}}</td>
+        @php 
+        $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign_id)->first();
+        @endphp
+        <td>{{ $name->starsign}}</td>
+        <td>{{ $d->data}}</td>
       </tr>
-      
+      @endforeach
+      @endif
     </tbody>
   </table>
 @endsection

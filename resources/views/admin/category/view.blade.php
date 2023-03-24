@@ -53,7 +53,7 @@
         <td>{{ $d->spl_date_from }}</td>
         <td>{{ $d->spl_date_to}}</td>
         @php 
-        $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign)->first();
+        $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign_id)->first();
         @endphp
         <td>{{ $name->starsign}}</td>
         <td>{{ $d->data}}</td>
