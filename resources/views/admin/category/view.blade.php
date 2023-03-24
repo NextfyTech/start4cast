@@ -2,7 +2,7 @@
 
 @section('content')
 
-<form class="form-horizontal" action="/action_page.php">
+<form class="form-horizontal" action="{{route('search')}}">
     <h3>View Special Data - Data Manage</h3>
   <div class="form-group">
   <label for="Category">Category:</label>
@@ -48,13 +48,19 @@
       </tr>
     </thead>
     <tbody>
+      @if(isset($data))
+      @foreach($data as $d)
       <tr>
-        <td>1</td>
-        <td>1</td>
-        <td>Health</td>
-        <td>abcd</td>
+        <td>{{ $d->spl_data_from }}</td>
+        <td>{{ $d->spl_data_to}}</td>
+        @php 
+        $name =  DB::table('horosco_starsign_master')->where('star_sign_id',$d->starsign)->first();
+        @endphp
+        <td>{{ $name->starsign }}</td>
+        <td>{{ $d->data}}</td>
       </tr>
-      
+      @endforeach
+      @endif
     </tbody>
   </table>
 
