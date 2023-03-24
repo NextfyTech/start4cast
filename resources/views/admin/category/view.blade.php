@@ -55,11 +55,16 @@
         @php 
         $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign_id)->first();
         @endphp
-        <td>{{ $name->starsign}}</td>
+        <td>{{$name->starsign}}</td>
         <td>{{ $d->data}}</td>
       </tr>
       @endforeach
+      @else
+      <td>
+        No Record found
+</td>
       @endif
+      
     </tbody>
   </table>
 
