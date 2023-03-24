@@ -6,7 +6,7 @@
     <h3>View Special Data - Data Manage</h3>
   <div class="form-group">
   <label for="Category">Category:</label>
-      <select id="category" class="form-control">
+      <select id="category" name='spl_categry_id' class="form-control">
         <option selected>Choose...</option>
         @foreach($category_list as $master)
         <option value="{{$master['spl_category_id']}}">{{$master->spl_category}}</option>
@@ -18,10 +18,9 @@
 
   <div class="form-group">
   <label for="starSign">Select Star Sign:</label>
-      <select id="starSign" class="form-control">
-        <option selected>All</option>
+      <select id="starSign" name='starsign_id' class="form-control">
         @foreach($star_sign_master as $master)
-        <option value="{{$master['id']}}">{{$master->starsign}}</option>
+        <option value="{{$master['starsign_id']}}">{{$master->starsign}}</option>
       @endforeach
       </select>
     
@@ -51,12 +50,12 @@
       @if(isset($data))
       @foreach($data as $d)
       <tr>
-        <td>{{ $d->spl_data_from }}</td>
-        <td>{{ $d->spl_data_to}}</td>
+        <td>{{ $d->spl_date_from }}</td>
+        <td>{{ $d->spl_date_to}}</td>
         @php 
-        $name =  DB::table('horosco_starsign_master')->where('star_sign_id',$d->starsign)->first();
+        $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign)->first();
         @endphp
-        <td>{{ $name->starsign }}</td>
+        <td>{{ $name->starsign}}</td>
         <td>{{ $d->data}}</td>
       </tr>
       @endforeach

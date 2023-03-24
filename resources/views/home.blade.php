@@ -25,9 +25,9 @@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    <a class="dropdown-item ml-2 text-center" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                                     document.getElementById('logout-form').submit();" style="background-color:blue;color:white">
                                         {{ __('Logout') }}
                                     </a>
 
