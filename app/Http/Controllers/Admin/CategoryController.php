@@ -14,11 +14,11 @@ class CategoryController extends Controller
     public function data_index(Request $request)
     {
         $spl_category = SplCategories::all();
-
         if ($request->isMethod('post')) {
             $validate = $this->validate($request, [
                 'spl_category_id' => 'required',
             ]);
+            // dd($request->file('csv_file'));
             Excel::import(new SplDataImport($request->all()),$request->file('csv_file'));
             return redirect('/category')->with('success', 'Data Added!');
         }

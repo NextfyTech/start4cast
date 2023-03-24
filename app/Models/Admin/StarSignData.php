@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class StarSignData extends Model
 {
     protected $table = 'horosco_startsign_data';
-    protected $fillable = ['date_from'];
+    protected $guarded = [];
     use HasFactory;
 }

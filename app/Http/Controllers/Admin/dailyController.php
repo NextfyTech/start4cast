@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Admin\StarSignData;
-use App\Imports\SplDataImport;
+use App\Imports\DailyDataImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 
@@ -15,15 +15,13 @@ class dailyController extends Controller
     public function index(Request $request)
     {
         if ($request->isMethod('post')) {
+            
             $validate = $this->validate($request, [
-                'data_upload' => 'required',
+                'csv_file' => 'required',
             ]);
-            Excel::import(new SplDataImport,$request->file('data_upload'))
-            // StarSignData::create([
-            //     'date_from' => $request->day,
-            //     'data_type' => 'day',
-            //     'data_upload' => ,
-            // ]); 
+            Excel::import(new DailyDataImport($request->all()),$request->file('csv_file'));
+            
+            return redirect('/daily')->with('success', 'Data Added!');
         }
         return view('admin.Data_Manager.daily');
     }

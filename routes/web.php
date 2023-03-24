@@ -44,9 +44,9 @@ Route::get('/viewdata', [App\Http\Controllers\Admin\ViewController::class, 'inde
 
 
 Route::any('/daily', [App\Http\Controllers\Admin\dailyController::class, 'index'])->name('Data_Manager.daily');
-Route::get('/weekly', [App\Http\Controllers\Admin\weeklyController::class, 'index'])->name('Data_Manager.weekly');
-Route::get('/monthly', [App\Http\Controllers\Admin\monthlyController::class, 'index'])->name('Data_Manager.monthly');
-Route::get('/yearly', [App\Http\Controllers\Admin\yearlyController::class, 'index'])->name('Data_Manager.yearly');
+Route::any('/weekly', [App\Http\Controllers\Admin\weeklyController::class, 'index'])->name('Data_Manager.weekly');
+Route::any('/monthly', [App\Http\Controllers\Admin\monthlyController::class, 'index'])->name('Data_Manager.monthly');
+Route::any('/yearly', [App\Http\Controllers\Admin\yearlyController::class, 'index'])->name('Data_Manager.yearly');
 Route::get('/view', [App\Http\Controllers\Admin\viewDataController::class, 'index'])->name('Data_Manager.view');
 
 
