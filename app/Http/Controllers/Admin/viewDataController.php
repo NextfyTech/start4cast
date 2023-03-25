@@ -15,9 +15,7 @@ class viewDataController extends Controller
 
     {
         $star_sign_master = StarSignMaster::all();
-       
         return view('admin.Data_Manager.view',compact('star_sign_master'));
-        return view('admin.Data_Manager.view');
     }
 
     public function search(Request $request){

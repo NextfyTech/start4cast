@@ -41,7 +41,6 @@ class CategorylistController extends Controller
     public function edit($spl_category_id)
     {
         $data =  Categorylist::where('spl_category_id',$spl_category_id)->first();
-        dd($data);
         return view('admin.category.edit', compact('data'));
     }
   

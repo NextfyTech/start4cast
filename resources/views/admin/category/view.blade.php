@@ -85,6 +85,5 @@
     
   </table>
 
-  <script>
     
 @endsection

@@ -19,12 +19,12 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+            <span>Data Manager</span>
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                    aria-expanded="true" aria-controls="collapseTwo">
                     <i class="fas fa-fw fa-cog"></i>
@@ -35,9 +35,9 @@
                         <a class="collapse-item" href="{{route('star_sign_master.index')}}">Star Sign Mastar</a>
                     </div>
                 </div>
-            </li>
+            </li> -->
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
@@ -53,12 +53,49 @@
                         <a class="collapse-item" href="{{route('Data_Manager.view')}}">View Data</a>
                     </div>
                 </div>
+            </li> -->
+
+             <!-- Daily data -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('Data_Manager.daily')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Daily</span></a>
             </li>
+
+             <!-- weekly data -->
+             <li class="nav-item">
+                <a class="nav-link" href="{{route('Data_Manager.weekly')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Weekly</span></a>
+            </li>
+
+            <!-- Monthly data -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('Data_Manager.monthly')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Monthly</span></a>
+            </li>
+
+            <!-- Monthly data -->
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('Data_Manager.yearly')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>Yearly</span></a>
+            </li>
+
+             <!-- View data -->
+             <li class="nav-item">
+                <a class="nav-link" href="{{route('Data_Manager.view')}}">
+                    <i class="fas fa-fw fa-chart-area"></i>
+                    <span>View</span></a>
+            </li>
+            
+
 
 
             
 
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
@@ -73,7 +110,7 @@
                         <a class="collapse-item" href="{{route('category.view')}}">View Data</a>
                     </div>
                 </div>
-            </li>
+            </li> -->
 
           
 
