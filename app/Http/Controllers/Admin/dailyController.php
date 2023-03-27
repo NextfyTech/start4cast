@@ -16,51 +16,46 @@ class dailyController extends Controller
 {
     public function index(Request $request)
     {
-        $fileName = '';
         if ($request->isMethod('post')) {
             $validate = $this->validate($request, [
                 'csv_file' => 'required',
             ]);
-            // if ($request->hasFile('csv_file')) {
-
-            //     $files = $request->file('csv_file');        
-
-            //     $extension = $files->getClientOriginalExtension();
-
-            //     $fileName =  Str::random(5)."-".date('his')."-".Str::random(3).".".$extension;
-
-            //     $publicUserDocPath = public_path().'/admin/doc/daily/';
-
-            //     $files->move($publicUserDocPath , $fileName);   
-            // }
             $lines=array();
-            $fp=fopen($request->csv_file, 'r');
+            $fp=fopen($request->file('csv_file'), 'r');
          while (!feof($fp))
            {
             $line=fgets($fp);
             //remove the lweading and trailing white spaces.
             $line=trim($line);
            // Ignore the empty lines.
-           if($line=="") { 
-           }else {
+           if($line=="") {
             
-            //add to array
-            $lines[]=$line;}
-        
+           }else {
+            $lines[]= $line;
+            }
         }
         fclose($fp);
-
-        // check for right file selection
-			$line1=trim($lines[0]);
-			
-			preg_match_all('!\d+!', $line1, $match);
-			$date=$match[0]; // date of selected file.
-
-            Log::info($date);
-            
-            //Excel::import(new DailyDataImport($request->all()),$request->file('csv_file'));
-            
-            return redirect('/daily')->with('success', 'Data Added!');
+        $newOddArr = array();
+        $newEvenArr = array();
+        $finalArr = array();
+        foreach($lines as $key => $newLine){
+            if($key%2 != 0){
+                $newOddArr[] = $newLine;
+            } else {
+                $newEvenArr[] = $newLine;
+            }
+        }
+        foreach($newEvenArr as $ke => $val){
+            $finalArr[$val] = $newOddArr[$ke];
+        }
+        foreach($finalArr as $final){
+        StarSignData::create([
+            'starsign_id' => $final['newEvenArr'],
+            'date_to' => $request->day,
+            'data_type' => 1,
+        ]);
+    }
+        return redirect('/daily')->with('success', 'Data Added!');
         }
         return view('admin.Data_Manager.daily');
     }
