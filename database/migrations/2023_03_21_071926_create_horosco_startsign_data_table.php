@@ -19,10 +19,9 @@ return new class extends Migration
             $table->date('date_from')->nullable();
             $table->date('date_to')->nullable();
             $table->string('data_type');
-            $table->string('data_txt');
-            $table->date('data_added_date');
-            $table->string('data_from_file');
-           
+            $table->longText('data_txt')->nullable();
+            $table->date('data_added_date')->default(\Illuminate\Support\Carbon::now());
+            $table->string('data_from_file')->nullable();
             $table->timestamps();
         });
     }

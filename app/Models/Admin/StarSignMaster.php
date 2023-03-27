@@ -4,7 +4,7 @@ namespace App\Models\Admin;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Admin\StarSignMaster;
+//use App\Models\Admin\StarSignMaster;
 
 class StarSignMaster extends Model
 {
