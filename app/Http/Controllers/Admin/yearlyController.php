@@ -43,7 +43,7 @@ class yearlyController extends Controller
 			fclose($fp);
 
             $yearstr = explode(" ",$lines[0]);
-            $date_from = "2014-05-01 00:00:00";
+            $date_from = "2014-06-01 00:00:00";
             $date_to = "08";
 			$year=$yearstr[0];
 			$year = trim($year);
@@ -106,7 +106,7 @@ class yearlyController extends Controller
 							    $data[$i] = $starsign_id."#".$date_from."#".$date_to."#".$type."#".$content[$i]."#".$temppath;
 							} 
 
-                            //Log::info($starsign);
+                            
 						
 						
 			
@@ -123,10 +123,11 @@ class yearlyController extends Controller
         }
         // Log::debug($newEvenArr);
         // Log::debug($newOddArr);
-        dd($newOddArr);
         foreach($newEvenArr as $ke => $val){
            // Log::debug($newEvenArr);
             $finalArr[$val] = $newOddArr[$ke];
+
+
         }
         //Log::info($finalArr);
         foreach ($finalArr as $starSign => $final) {
@@ -135,17 +136,18 @@ class yearlyController extends Controller
             $time_period = explode("#", $request->time_period);
             $date_from= $time_period[0];
 			$date_to = $time_period[1];
-            //$res = preg_replace("/[^0-9.]/", "", "$ final");
-            //dd($res);
+        //  $regularString = substr($final, 1);         
+                // Log::info($final);
             StarSignData::create([
-                'starsign_id' => 4,
+                'starsign_id' => $starsignid->starsign_id,
                 'date_from' => $date_from,
                 'date_to' => $date_to,
                 'data_type' => 'yearly',
                 'data_txt' => $final,
                 'data_from_file' => 'null',
-                'data_added_date' => Carbon::now()
+                // 'data_added_date' => 'hjafgj'
             ]);
+            return redirect('/yearly')->with('success', 'Data Added!');
         }
     }
     return view('admin.Data_Manager.yearly');

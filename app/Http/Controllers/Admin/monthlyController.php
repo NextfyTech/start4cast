@@ -106,7 +106,7 @@ class monthlyController extends Controller
             $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
             $day = Carbon::parse($request->get('day'));
             StarSignData::create([
-                'starsign_id' => $starsignid->id,
+                'starsign_id' => $starsignid->starsign_id,
                 'date_from' => $day,
                 'date_to' => $day->addDay(),
                 'data_type' => 'monthly',
@@ -115,6 +115,7 @@ class monthlyController extends Controller
                 'data_added_date' => Carbon::now()
             ]);
         }
+        return redirect('/monthly')->with('success', 'Data Added!');
         }
     }
     return view('admin.Data_Manager.monthly');

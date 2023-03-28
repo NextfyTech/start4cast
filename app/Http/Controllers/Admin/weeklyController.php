@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Admin\StarSignMaster;
+use Illuminate\Support\Carbon;
 use Validator;
 use App\Models\Admin\StarSignData;
 use App\Imports\WeeklyDataImport;
@@ -17,7 +19,6 @@ class weeklyController extends Controller
     public function index(Request $request)
     {
         if ($request->isMethod('post')) {
-            dd($request->all());
             $validate = $this->validate($request, [
                 'csv_file' => 'required',
             ]);
@@ -51,7 +52,6 @@ class weeklyController extends Controller
 			$monthf = ucfirst($monthf);
             $date_from = "2014-07-01 00:00:00";
             $date_to = "08";
-			//echo "$monthf<br>";
 			$monthes2=array("01"=>"January","02"=>"February","03"=>"March","04"=>"April","05"=>"May","06"=>"June","07"=>"July","08"=>"August","09"=>"September","10"=>"October","11"=>"November","12"=>"December");
 
 			//if month in file is in short form.
@@ -59,45 +59,21 @@ class weeklyController extends Controller
 			if (in_array($monthf, $mntharray)) {
 					$temp_month_no = date('m', strtotime($monthf));
 					$monthf = $monthes2[$temp_month_no];
-					//echo "new month:::$temp_month_no:$monthf<br>";
 				}
 
 
 		    preg_match_all('!\d+!', $week, $match); //getting date.
 			$datefromfile=$match[0][0];
-			// "<br>date from file:$datefromfile  file month:$monthf <br>";
-
-			/* //if format is"weekly april 6"
-				$line1 = explode(" ",$lines[0]);
-				//getting month.
-				$monthf = $line1[1];
-				$monthf = strtolower($monthf);
-			    $monthf = ucfirst($monthf);
-			    $monthf = trim($monthf);
-				//getting date.
-				$datefromfile=$line1[2];
-		    */
-
-
 			//extracting month and date from form.
 			$dateto1 = explode("-",$date_to);
-            //Log::info($dateto1);
 			$dateto = (int)$dateto1[0];
 			$month = $dateto1[0];
-
-            //$monthes2=array("01"=>"January","02"=>"February","03"=>"March","04"=>"April","05"=>"May","06"=>"June","07"=>"Jule","08"=>"August","09"=>"September","10"=>"October","11"=>"November","12"=>"December");
-			//echo "<br>dateto:$dateto   monthto:$monthes2[$month]";
-
-			//echo $month; echo $monthes2[$month];
 			//getting week number from date.
 			$ddate = $date_from;
 			$date1 = new DateTime($ddate);
 			$week1 = $date1->format("W");
 
-		   //echo "<br>week:$week1 $datefromfile  <br> $dateto";
-
-           if ($monthf == $monthes2[$month] && $datefromfile == $dateto) {
-
+          
 						//open and read the file
 						$newLines=array();
 						for ($i = 1 , $j = 0; $i < count($lines); ++$i) {
@@ -131,7 +107,6 @@ class weeklyController extends Controller
 								$words = explode("#",$newlines[$i]);
 								$sign[$i]=$words[0];
 								$content[$i]=$words[1];
-								//$content[$i] = mysql_real_escape_string($content[$i]);#make the text data safe for database operations.
 
 						}
 
@@ -141,9 +116,30 @@ class weeklyController extends Controller
 								$temp = $sign[$i];
 								$temp=trim($temp);
 								$starsign_id = $starsign["$temp"];
-							    $data[$i] = $starsign_id."#".$date_from."#".$date_to."#".$type."#".$content[$i]."#".$temppath;
+							    $data[$i] = $starsign_id."#".$date_from."#".$date_to."#".$content[$i];
 							}
+                            $newOddArr = $content;
+                            $newEvenArr = $sign;
+                            $finalArr = array();
+                            foreach($newEvenArr as $ke => $val){
+                                $finalArr[$val] = $newOddArr[$ke];
+                            }
+                            foreach ($finalArr as $starSign => $final) {
+                                $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
+                                //Log::info($starsignid->id);
+                                 $day = Carbon::parse($request->get('day'));
+                                 StarSignData::create([
+                                     'starsign_id' => $starsignid->starsign_id,
+                                     'date_from' => $day,
+                                     'date_to' => $day->addDay(),
+                                     'data_type' => 'Weekly',
+                                     'data_txt' => $final,
+                                     'data_from_file' => 'null',
+                                     'data_added_date' => Carbon::now()
+                                     ]);
         }
+        return redirect('/weekly')->with('success', 'Data Added!');
+    
     }
     return view('admin.Data_Manager.weekly');
 }
