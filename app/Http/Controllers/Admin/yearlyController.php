@@ -27,15 +27,12 @@ class yearlyController extends Controller
                     $line = fgets($fp);
                     //remove the lweading and trailing white spaces.
                     $line = trim($line);
-
                     // Ignore the empty lines.
                     if ($line == "") {
                     } else {
-
                         //add to array
                         $lines[] = $line;
                     }
-
                 }
                 fclose($fp);
                 $yearstr = explode(" ", $lines[0]);
@@ -67,18 +64,14 @@ class yearlyController extends Controller
                     for ($i = 0, $j = 0; $i < count($newlines); ++$i, ++$j) {
                         $newlines[$i] = preg_replace("/([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)(\s+)-(\s+)([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)/", "# ", "$newlines[$i]");
                     }
-
-
                     //separate the sign and content.
                     $sign = array();
                     $content = array();
-
                     for ($i = 0; $i < count($newlines); ++$i) {
                         $words = explode("#", $newlines[$i]);
                         $sign[$i] = $words[0];
                         $content[$i] = $words[1];
                         //$content[$i] = mysql_real_escape_string($content[$i]);#make the text data safe for database operations.
-
                     }
                     $starsign = array("ARIES" => "1", "TAURUS" => "2", "GEMINI" => "3", "CANCER" => "4", "LEO" => "5", "VIRGO" => "6", "LIBRA" => "7", "SCORPIO" => "8", "SAGITTARIUS" => "9", "CAPRICORN" => "10", "AQUARIUS" => "11", "PISCES" => "12");
                     for ($i = 0; $i < count($newlines); ++$i) {
