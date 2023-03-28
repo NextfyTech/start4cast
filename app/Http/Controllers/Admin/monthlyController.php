@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use App\Models\Admin\StarSignMaster;
+use Illuminate\Support\Carbon;
 use Validator;
 use App\Models\Admin\StarSignData;
 use App\Imports\DailyMonthlyImport;
@@ -100,7 +102,19 @@ class monthlyController extends Controller
         foreach($newEvenArr as $ke => $val){
             $finalArr[$val] = $newOddArr[$ke];
         }
-        Log::debug($finalArr);
+        foreach ($finalArr as $starSign => $final) {
+            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
+            $day = Carbon::parse($request->get('day'));
+            StarSignData::create([
+                'starsign_id' => $starsignid->id,
+                'date_from' => $day,
+                'date_to' => $day->addDay(),
+                'data_type' => 'monthly',
+                'data_txt' => $final,
+                'data_from_file' => 'null',
+                'data_added_date' => Carbon::now()
+            ]);
+        }
         }
     }
     return view('admin.Data_Manager.monthly');

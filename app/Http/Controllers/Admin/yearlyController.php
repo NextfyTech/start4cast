@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use App\Models\Admin\StarSignMaster;
 use Maatwebsite\Excel\Facades\Excel;
 use Validator;
 use App\Models\Admin\StarSignData;
@@ -15,7 +17,6 @@ class yearlyController extends Controller
     public function index(Request $request)
     {
         if ($request->isMethod('post')) {
-            
             $validate = $this->validate($request, [
                 'csv_file' => 'required',
             ]);
@@ -120,11 +121,32 @@ class yearlyController extends Controller
                 $newEvenArr[] = $newLine;
             }
         }
+        // Log::debug($newEvenArr);
+        // Log::debug($newOddArr);
+        dd($newOddArr);
         foreach($newEvenArr as $ke => $val){
            // Log::debug($newEvenArr);
             $finalArr[$val] = $newOddArr[$ke];
         }
-        Log::debug($finalArr);
+        //Log::info($finalArr);
+        foreach ($finalArr as $starSign => $final) {
+            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
+            //$day = Carbon::parse($request->get('time_period'));
+            $time_period = explode("#", $request->time_period);
+            $date_from= $time_period[0];
+			$date_to = $time_period[1];
+            //$res = preg_replace("/[^0-9.]/", "", "$ final");
+            //dd($res);
+            StarSignData::create([
+                'starsign_id' => 4,
+                'date_from' => $date_from,
+                'date_to' => $date_to,
+                'data_type' => 'yearly',
+                'data_txt' => $final,
+                'data_from_file' => 'null',
+                'data_added_date' => Carbon::now()
+            ]);
+        }
     }
     return view('admin.Data_Manager.yearly');
 }
