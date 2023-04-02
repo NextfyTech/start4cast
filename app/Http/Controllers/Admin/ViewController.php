@@ -42,7 +42,24 @@ class ViewController extends Controller
                 $weeks[$week] = "Week $startOfWeek - Week $endOfWeek";
                 $date->addWeek();
             }
-            Log::debug($weeks);
+            return response()->json(['weeks'=>$weeks]);
+        }catch (\Exception $exception){
+            Log::alert($exception->getMessage());
+        }
+    }
+
+    public function getweeksinweek(Request $request){
+        try {
+            $getyear = $request->get('year');
+            $weeks = [];
+            $date = \Carbon\Carbon::createFromDate($getyear, 1, 1);
+            for ($week = 1; $week <= $date->weeksInYear; $week++) {
+                $startOfWeek = $date->startOfWeek()->format('m-d-y');
+                $endOfWeek = $date->endOfWeek()->format('m-d-y');
+                $weeks[$date->startOfWeek()->format('yyyy-mm-dd')."#".$date->endOfWeek()->format('yyyy-mm-dd')] = "Week $startOfWeek - Week $endOfWeek";
+                $date->addWeek();
+            }
+            Log::alert($weeks);
             return response()->json(['weeks'=>$weeks]);
         }catch (\Exception $exception){
             Log::alert($exception->getMessage());

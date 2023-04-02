@@ -53,6 +53,7 @@ Route::get('/view', [App\Http\Controllers\Admin\viewDataController::class, 'inde
 Route::get('/searchSpecialData', [App\Http\Controllers\Admin\viewDataController::class, 'search'])->name('searchSpecialData');
 
 Route::get('/getweeks',[ViewController::class,'getWeeks'])->name('getWeeks');
+Route::get('/getweeksinweek',[ViewController::class,'getweeksinweek'])->name('getweeksinweek');
 
 Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterController::class, 'index'])->name('star_sign_master.index');
 

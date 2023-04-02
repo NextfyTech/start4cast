@@ -76,6 +76,25 @@
                  }
              }
          });
-     })
+     });
+
+     $("#year").on("change",function (e){
+         const selectedYear = $(this).val();
+         $.ajax({
+             url : "{{route('getweeksinweek')}}",
+             data : {'year' : selectedYear},
+             success : function (res){
+                 const selectElement = document.querySelector('#timePeriod');
+                 $('#timePeriod').empty();
+                 for (const [key, value] of Object.entries(res.weeks)) {
+                     const option = document.createElement('option');
+                     option.value = key;
+                     option.text = value;
+                     selectElement.appendChild(option);
+                 }
+             }
+         });
+     });
+
  </script>
 </body>
