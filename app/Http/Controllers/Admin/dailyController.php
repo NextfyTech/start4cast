@@ -50,7 +50,7 @@ class dailyController extends Controller
             foreach ($finalArr as $starSign => $final) {
                 $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
                 $day = Carbon::parse($request->get('day'));
-                StarSignData::create([
+                StarSignData::insert([
                     'starsign_id' => $starsignid->starsign_id,
                     'date_from' => $day,
                     'date_to' => $day->addDay(),
