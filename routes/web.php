@@ -52,7 +52,7 @@ Route::any('/yearly', [App\Http\Controllers\Admin\yearlyController::class, 'inde
 Route::get('/view', [App\Http\Controllers\Admin\viewDataController::class, 'index'])->name('Data_Manager.view');
 Route::get('/searchSpecialData', [App\Http\Controllers\Admin\viewDataController::class, 'search'])->name('searchSpecialData');
 
-
+Route::get('/getweeks',[ViewController::class,'getWeeks'])->name('getWeeks');
 
 Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterController::class, 'index'])->name('star_sign_master.index');
 

@@ -34,11 +34,48 @@
  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-<!-- <script>
-    var dropbox=document.getElementById('year');
-    var array=[2010,2012,2013,2014,2015,2016,2018,2019,2020,2021,2022,2023,2024,2025,2026,2027];
-    for(var i=0;i<array.length;i++){
-        dropbox.options.add(new Option(array[i]));
-    }
-</script> -->
+ <script>
+     $(".dataTypeSelect").on("change",function (e){
+         if($(this).val().replaceAll(' ') === "Yearly"){
+             $(".selectaday").addClass("d-none");
+             $(".yearlyData").removeClass("d-none");
+             $(".weeklyData").addClass("d-none");
+             $(".monthlyData").addClass("d-none");
+         }else if($(this).val().replaceAll(' ') === "Monthly") {
+             $(".selectaday").addClass("d-none");
+             $('.monthlyData').removeClass('d-none');
+             $(".yearlyData").removeClass("d-none");
+             $(".weeklyData").addClass("d-none");
+         } else if ($(this).val().replaceAll(' ') === "Weekly"){
+             $(".selectaday").addClass("d-none");
+             $(".weeklyData").removeClass("d-none");
+             $(".yearlyData").removeClass("d-none");
+             $(".monthlyData").addClass("d-none");
+         }else {
+             $(".selectaday").removeClass("d-none");
+             $(".weeklyData").addClass("d-none");
+             $(".yearlyData").addClass("d-none");
+             $('.monthlyData').addClass('d-none');
+         }
+
+         // $(".selectaday").removeClass("d-none");
+     });
+     $("#selectedYear").on("change",function (e){
+         const selectedYear = $(this).val();
+         $.ajax({
+             url : "{{route('getWeeks')}}",
+             data : {'year' : selectedYear},
+             success : function (res){
+                 const selectElement = document.querySelector('.weeklyData2');
+                 $('.weeklyData2').empty();
+                 for (const [key, value] of Object.entries(res.weeks)) {
+                     const option = document.createElement('option');
+                     option.value = key;
+                     option.text = value;
+                     selectElement.appendChild(option);
+                 }
+             }
+         });
+     })
+ </script>
 </body>
