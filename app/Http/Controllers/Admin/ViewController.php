@@ -59,7 +59,6 @@ class ViewController extends Controller
                 $weeks[$date->startOfWeek()->format('yyyy-mm-dd')."#".$date->endOfWeek()->format('yyyy-mm-dd')] = "Week $startOfWeek - Week $endOfWeek";
                 $date->addWeek();
             }
-            Log::alert($weeks);
             return response()->json(['weeks'=>$weeks]);
         }catch (\Exception $exception){
             Log::alert($exception->getMessage());

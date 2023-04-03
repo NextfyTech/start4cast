@@ -69,6 +69,7 @@ class weeklyController extends Controller
 			$dateto = (int)$dateto1[0];
 			$month = $dateto1[0];
 			//getting week number from date.
+			Log::info($date_from);
 			$ddate = $date_from;
 			$date1 = new DateTime($ddate);
 			$week1 = $date1->format("W");

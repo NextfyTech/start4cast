@@ -17,7 +17,6 @@ class monthlyController extends Controller
     public function index(Request $request)
     {
         if ($request->isMethod('post')) {
-//            dd($request->all());
             $validate = $this->validate($request, [
                 'csv_file' => 'required',
             ]);
@@ -26,10 +25,9 @@ class monthlyController extends Controller
 			 while (!feof($fp))
 			   {
 				$line=fgets($fp);
-
 				//remove the lweading and trailing white spaces.
 				$line=trim($line);
-
+				
 			   // Ignore the empty lines.
 			   if($line=="") {
 			   }else {
@@ -39,18 +37,19 @@ class monthlyController extends Controller
 
 			}
 			fclose($fp);
-        $monthes = array("January"=>"01", "February"=>"02", "March"=>"03", "April"=>"04", "May"=>"05", "June"=>"06", "July"=>"07", "August"=>"08", "September"=>"09", "October"=>"10", "November"=>11, "December"=>"12");
+        $monthes = array("January"=>"01", "February"=>"02", "March"=>"03", "April"=>"04", "May"=>"05", "June"=>"06", "July"=>"07", "August"=>"08", "September"=>"09", "October"=>"10", "November"=>"11", "December"=>"12");
 			//print $lines[0];
 			$month = explode(" ",$lines[0]);
 			$month1 = ucfirst((strtolower($month[0])));
-            $date_from = "2014-06-01 00:00:00";
-            $date_to = "08";
-            $fromonth = explode("-",$date_from);
-            if ($fromonth[1] == $monthes["$month1"]) {
-
-
+			$dateRangeArray = explode("#", $request->get('year_data'));
+			$date_from = $dateRangeArray[0];
+			$date_to = $dateRangeArray[1];
+            $fromonth = $date_from;
+			
+            if ($monthes["$month1"]) {
 						//open and read the file
 						$newLines=array();
+						Log::info($newLines);
 						for ($i = 1 , $j = 0; $i < count($lines); ++$i) {
 							$words = explode(" ",$lines[$i]);
 							$words[0] = strtoupper($words[0]);
@@ -94,7 +93,6 @@ class monthlyController extends Controller
 
 								 $data[$i] = $starsign_id."#".$date_from."#".$date_to."##".$content[$i]."#";
 							}
-        // Log::info($sign);
 
         $newOddArr = $content;
         $newEvenArr = $sign;
@@ -104,11 +102,11 @@ class monthlyController extends Controller
         }
         foreach ($finalArr as $starSign => $final) {
             $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
-            $day = Carbon::parse($request->get('day'));
+			$dateArray = explode("#", $request->get('year_data'));
             StarSignData::create([
                 'starsign_id' => $starsignid->starsign_id,
-                'date_from' => $day,
-                'date_to' => $day->addDay(),
+                'date_from' => $dateArray[0],
+                'date_to' => $dateArray[1],
                 'data_type' => 'monthly',
                 'data_txt' => $final,
                 'data_from_file' => 'null',

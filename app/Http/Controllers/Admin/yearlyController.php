@@ -36,13 +36,16 @@ class yearlyController extends Controller
                 }
                 fclose($fp);
                 $yearstr = explode(" ", $lines[0]);
-                $date_from = "2014-06-01 00:00:00";
-                $date_to = "08";
+                $dateRangeArray = explode("#", $request->get('time_period'));
+                $date_from = $dateRangeArray[0];
+                $date_to = $dateRangeArray[1];
+                // $date_from = "2014-06-01 00:00:00";
+                // $date_to = "08";
                 $year = $yearstr[0];
                 $year = trim($year);
                 $year_keyword = $yearstr[1];
                 $year_keyword = strtolower("$year_keyword");
-                $datestr = explode("-", $date_from);
+                $datestr = $date_from;
                 $fyear = $datestr[0];
                 $fyear = trim($fyear);
                 $newLines = array();
@@ -92,7 +95,7 @@ class yearlyController extends Controller
                         StarSignData::create([
                             'starsign_id' => $final['id'],
                             'date_from' => $final['date_from'],
-                            'date_to' => Carbon::parse(date('y-m-d')),
+                            'date_to' => $final['date_to'],
                             'data_type' => 'yearly',
                             'data_txt' => $finalString,
                             'data_from_file' => 'null',
