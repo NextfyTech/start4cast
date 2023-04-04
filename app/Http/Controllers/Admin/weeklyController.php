@@ -50,8 +50,9 @@ class weeklyController extends Controller
 			$monthf = preg_replace("/[0-9]/", "", $week); // getting month.
 			$monthf = strtolower($monthf);
 			$monthf = ucfirst($monthf);
-            $date_from = "2014-07-01 00:00:00";
-            $date_to = "08";
+			$dateRangeArray = explode(' - ', $request->timePeriod);
+			$date_from = substr($dateRangeArray[0], strpos($dateRangeArray[0], ' ') + 1);
+			$date_to = substr($dateRangeArray[1], strpos($dateRangeArray[1], ' ') + 1);
 			$monthes2=array("01"=>"January","02"=>"February","03"=>"March","04"=>"April","05"=>"May","06"=>"June","07"=>"July","08"=>"August","09"=>"September","10"=>"October","11"=>"November","12"=>"December");
 
 			//if month in file is in short form.

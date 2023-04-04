@@ -88,7 +88,7 @@
                  $('#timePeriod').empty();
                  for (const [key, value] of Object.entries(res.weeks)) {
                      const option = document.createElement('option');
-                     option.value = key;
+                     option.value = value;
                      option.text = value;
                      selectElement.appendChild(option);
                  }
