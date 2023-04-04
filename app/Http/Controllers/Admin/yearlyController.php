@@ -103,6 +103,7 @@ class yearlyController extends Controller
                         'data_txt' => $this->clean($datum['data_txt']),
                         'data_from_file' => $datum['data_from_file'],
                     ]);
+                    return redirect('/yearly')->with('success', 'Data Added!');
                 }
             }catch (\Exception $e){
                 Log::alert($e->getMessage());
