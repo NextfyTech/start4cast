@@ -56,7 +56,7 @@ class ViewController extends Controller
             for ($week = 1; $week <= $date->weeksInYear; $week++) {
                 $startOfWeek = $date->startOfWeek()->format('m-d-y');
                 $endOfWeek = $date->endOfWeek()->format('m-d-y');
-                $weeks[$date->startOfWeek()->format('yyyy-mm-dd')."#".$date->endOfWeek()->format('yyyy-mm-dd')] = "Week $startOfWeek - Week $endOfWeek";
+                $weeks[$date->startOfWeek()->format('yy-mm-dd')."#".$date->endOfWeek()->format('yy-mm-dd')] = "Week $startOfWeek - Week $endOfWeek";
                 $date->addWeek();
             }
             return response()->json(['weeks'=>$weeks]);

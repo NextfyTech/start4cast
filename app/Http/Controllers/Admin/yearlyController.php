@@ -39,11 +39,9 @@ class yearlyController extends Controller
                 $dateRangeArray = explode("#", $request->get('time_period'));
                 $date_from = $dateRangeArray[0];
                 $date_to = $dateRangeArray[1];
-                // $date_from = "2014-06-01 00:00:00";
-                // $date_to = "08";
                 $year = $yearstr[0];
                 $year = trim($year);
-                $year_keyword = $yearstr[1];
+                $year_keyword = $yearstr[0];
                 $year_keyword = strtolower("$year_keyword");
                 $datestr = $date_from;
                 $fyear = $datestr[0];
@@ -89,6 +87,7 @@ class yearlyController extends Controller
                         ];
                     }
                 }
+               
                 if(isset($data)){
                     foreach ($data as $starSign => $final) {
                         $finalString = $this->clean($final['content']);
