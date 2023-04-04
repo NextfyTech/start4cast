@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -36,8 +37,9 @@ class yearlyController extends Controller
                 }
                 fclose($fp);
                 $yearstr = explode(" ", $lines[0]);
-                $date_from = "2014-06-01 00:00:00";
-                $date_to = "08";
+                $dataArray = explode("#",$request->get('time_period'));
+                $date_from = $dataArray[0];
+                $date_to = $dataArray[0];
                 $year = $yearstr[0];
                 $year = trim($year);
                 $year_keyword = $yearstr[1];
@@ -46,6 +48,10 @@ class yearlyController extends Controller
                 $fyear = $datestr[0];
                 $fyear = trim($fyear);
                 $newLines = array();
+//                Log::debug($date_from);
+//                Log::notice($date_to);
+//                Log::info($year);
+//                dd($request->get('time_period'));
                 if ($year_keyword == "yearly") {
                     for ($i = 1, $j = 0; $i < count($lines); ++$i) {
                         $words = explode(" ", $lines[$i]);
@@ -79,29 +85,29 @@ class yearlyController extends Controller
                         $temp = trim($temp);
                         $starsign_id = $starsign["$temp"];
                         $data[] = [
-                            'id' => $starsign_id,
+                            'starsign_id' => $starsign_id,
+                            'data_type' => 'yearly',
                             'date_from' => $date_from,
                             'date_to' => $date_to,
-                            'content' => $content[$i]
+                            'data_txt' => $content[$i],
+                            'data_from_file' => 'null',
                         ];
                     }
                 }
-                if(isset($data)){
-                    foreach ($data as $starSign => $final) {
-                        $finalString = $this->clean($final['content']);
-                        StarSignData::create([
-                            'starsign_id' => $final['id'],
-                            'date_from' => $final['date_from'],
-                            'date_to' => Carbon::parse(date('y-m-d')),
-                            'data_type' => 'yearly',
-                            'data_txt' => $finalString,
-                            'data_from_file' => 'null',
-                            // 'data_added_date' => 'hjafgj'
-                        ]);
-                        return redirect('/yearly')->with('success', 'Data Added!');
-                    }
+                foreach ($data as $datum){
+                    StarSignData::insert([
+                        'starsign_id' => $datum['starsign_id'],
+                        'data_type' => $datum['data_type'],
+                        'date_from' => $datum['date_from'],
+                        'date_to' => $datum['date_to'],
+                        'data_txt' => $this->clean($datum['data_txt']),
+                        'data_from_file' => $datum['data_from_file'],
+                    ]);
                 }
             }catch (\Exception $e){
+                Log::alert($e->getMessage());
+                Log::debug($e->getTraceAsString());
+                Log::info($e->getLine());
                 return redirect()->back();
             }
         }

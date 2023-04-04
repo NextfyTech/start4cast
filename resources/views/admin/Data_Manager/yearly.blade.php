@@ -20,12 +20,12 @@
     {{ session('success') }}
   </div>
 @endif
-  
+
   <div class="form-group">
   <label for="year">Year:</label>
       <select id="year" name="time_period" class="form-control">
         <option selected>Choose...</option>
-        <option value="2013-01-01">2013</option>
+        <option value="2013-01-01#2013-12-31">2013</option>
         <option value="2014-01-01#2014-12-31">2014</option>
         <option value="2015-01-01#2015-12-31">2015</option>
         <option value="2016-01-01#2016-12-31">2016</option>
