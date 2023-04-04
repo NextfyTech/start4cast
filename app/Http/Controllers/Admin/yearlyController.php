@@ -37,17 +37,21 @@ class yearlyController extends Controller
                 }
                 fclose($fp);
                 $yearstr = explode(" ", $lines[0]);
-                $dateRangeArray = explode("#", $request->get('time_period'));
-                $date_from = $dateRangeArray[0];
-                $date_to = $dateRangeArray[1];
+                $dataArray = explode("#",$request->get('time_period'));
+                $date_from = $dataArray[0];
+                $date_to = $dataArray[0];
                 $year = $yearstr[0];
                 $year = trim($year);
-                $year_keyword = $yearstr[0];
+                $year_keyword = $yearstr[1];
                 $year_keyword = strtolower("$year_keyword");
-                $datestr = $date_from;
+                $datestr = explode("-", $date_from);
                 $fyear = $datestr[0];
                 $fyear = trim($fyear);
                 $newLines = array();
+//                Log::debug($date_from);
+//                Log::notice($date_to);
+//                Log::info($year);
+//                dd($request->get('time_period'));
                 if ($year_keyword == "yearly") {
                     for ($i = 1, $j = 0; $i < count($lines); ++$i) {
                         $words = explode(" ", $lines[$i]);
