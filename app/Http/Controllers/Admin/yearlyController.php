@@ -42,17 +42,16 @@ class yearlyController extends Controller
                 $date_to = $dataArray[0];
                 $year = $yearstr[0];
                 $year = trim($year);
-                $year_keyword = $yearstr[1];
+                $year_keyword = $yearstr[0];
                 $year_keyword = strtolower("$year_keyword");
                 $datestr = explode("-", $date_from);
                 $fyear = $datestr[0];
                 $fyear = trim($fyear);
                 $newLines = array();
-//                Log::debug($date_from);
-//                Log::notice($date_to);
-//                Log::info($year);
-//                dd($request->get('time_period'));
-                if ($year_keyword == "yearly") {
+            //    Log::debug($date_from);
+            //    Log::notice($date_to);
+            //    Log::info($year);
+                if ($year_keyword == "year") {
                     for ($i = 1, $j = 0; $i < count($lines); ++$i) {
                         $words = explode(" ", $lines[$i]);
                         $words[0] = strtoupper($words[0]);
@@ -93,7 +92,9 @@ class yearlyController extends Controller
                             'data_from_file' => 'null',
                         ];
                     }
+                    
                 }
+                //Log::debug($data);
                 foreach ($data as $datum){
                     StarSignData::insert([
                         'starsign_id' => $datum['starsign_id'],
