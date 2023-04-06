@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use App\Models\Admin\StarSignMaster;
 use Maatwebsite\Excel\Facades\Excel;
@@ -95,8 +96,8 @@ class yearlyController extends Controller
                     
                 }
                 //Log::debug($data);
-                foreach ($data as $datum){
-                    StarSignData::insert([
+                foreach ($data as $key => $datum){
+                    DB::table('horosco_startsign_data')->insert([
                         'starsign_id' => $datum['starsign_id'],
                         'data_type' => $datum['data_type'],
                         'date_from' => $datum['date_from'],
@@ -104,6 +105,23 @@ class yearlyController extends Controller
                         'data_txt' => $this->clean($datum['data_txt']),
                         'data_from_file' => $datum['data_from_file'],
                     ]);
+                    Log::debug($datum);
+                    // $year_data = new StarSignData;
+                    // $year_data->starsign_id = $datum['starsign_id'];
+                    // $year_data->data_type = $datum['data_type'];
+                    // $year_data->date_from = $datum['date_from'];
+                    // $year_data->date_to = $datum['date_to'];
+                    // $year_data->data_txt = $datum['data_txt'];
+                    // $year_data->data_from_file = $datum['data_from_file'];
+                    // $year_data->save();
+                    // StarSignData::insert([
+                    //     'starsign_id' => $datum['starsign_id'],
+                    //     'data_type' => $datum['data_type'],
+                    //     'date_from' => $datum['date_from'],
+                    //     'date_to' => $datum['date_to'],
+                    //     'data_txt' => $this->clean($datum['data_txt']),
+                    //     'data_from_file' => $datum['data_from_file'],
+                    // ]);
                     return redirect('/yearly')->with('success', 'Data Added!');
                 }
             }catch (\Exception $e){
