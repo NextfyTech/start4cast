@@ -16,106 +16,127 @@ class monthlyController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request->isMethod('post')) {
-            $validate = $this->validate($request, [
-                'csv_file' => 'required',
-            ]);
-            $lines=array();
-				$fp=fopen($request->file('csv_file'), 'r');
-			 while (!feof($fp))
-			   {
-				$line=fgets($fp);
-				//remove the lweading and trailing white spaces.
-				$line=trim($line);
-				
-			   // Ignore the empty lines.
-			   if($line=="") {
-			   }else {
+        try {
+            if ($request->isMethod("post")) {
+                $timePeriod = explode("#", $request->get('month_data'));
+                $date_from = $request->get('year_data') . "-" . $timePeriod[0];
+                $date_to = $request->get('year_data') . "-" . $timePeriod[1];
+//                dd($date_to);
+                $lines = array();
+                $fp = fopen($request->file('csv_file'), 'r');
+                while (!feof($fp)) {
+                    $line = fgets($fp);
 
-				//add to array
-				$lines[]=$line;}
+                    //remove the lweading and trailing white spaces.
+                    $line = trim($line);
 
-			}
-			fclose($fp);
-        $monthes = array("January"=>"01", "February"=>"02", "March"=>"03", "April"=>"04", "May"=>"05", "June"=>"06", "July"=>"07", "August"=>"08", "September"=>"09", "October"=>"10", "November"=>"11", "December"=>"12");
-			//print $lines[0];
-			$month = explode(" ",$lines[0]);
-			$month1 = ucfirst((strtolower($month[0])));
-			$dateRangeArray = explode("#", $request->get('year_data'));
-			$date_from = $dateRangeArray[0];
-			$date_to = $dateRangeArray[1];
-            $fromonth = $date_from;
-			
-            if ($monthes["$month1"]) {
-						//open and read the file
-						$newLines=array();
-						Log::info($newLines);
-						for ($i = 1 , $j = 0; $i < count($lines); ++$i) {
-							$words = explode(" ",$lines[$i]);
-							$words[0] = strtoupper($words[0]);
+                    // Ignore the empty lines.
+                    if ($line == "") {
+                    } else {
 
-							$sign = array("ARIES", "TAURUS", "GEMINI", "CANCER", "LEO", "VIRGO", "LIBRA", "SCORPIO", "SAGITTARIUS", "CAPRICORN", "AQUARIUS", "PISCES");
+                        //add to array
+                        $lines[] = $line;
+                    }
 
-							if (in_array($words[0], $sign)) {
-									$newlines[$j]=$lines[$i];
-									$j++;
-								} else {
-
-									$newlines[$j-1]=$newlines[$j-1]."\r\n".$lines[$i];
-
-								   }
-						}
+                }
+                fclose($fp);
+                $monthes = array("January" => "01", "February" => "02", "March" => "03", "April" => "04", "May" => "05", "June" => "06", "July" => "07", "August" => "08", "September" => "09", "October" => "10", "November" => 11, "December" => "12");
+                //print $lines[0];
+                $month = explode(" ", $lines[0]);
+                $month1 = ucfirst((strtolower($month[0])));
 
 
-						// replacing start and end date with '#'
-						for ($i = 0, $j = 0; $i < count($newlines); ++$i,++$j) {
-						$newlines[$i] = preg_replace("/([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)(\s+)-(\s+)([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)/", "# ", "$newlines[$i]");
-						}
+                $fromonth = explode("-", $date_from);
+                if ($fromonth[1] == $monthes["$month1"]) {
+                    //open and read the file
+                    $newLines = array();
+                    for ($i = 1, $j = 0; $i < count($lines); ++$i) {
+                        $words = explode(" ", $lines[$i]);
+                        $words[0] = strtoupper($words[0]);
+
+                        $sign = array("ARIES", "TAURUS", "GEMINI", "CANCER", "LEO", "VIRGO", "LIBRA", "SCORPIO", "SAGITTARIUS", "CAPRICORN", "AQUARIUS", "PISCES");
+
+                        if (in_array($words[0], $sign)) {
+                            $newlines[$j] = $lines[$i];
+                            $j++;
+                        } else {
+
+                            $newlines[$j - 1] = $newlines[$j - 1] . "\r\n" . $lines[$i];
+
+                        }
+                    }
 
 
-						//separate the sign and content.
-						$sign=array();
-						$content=array();
+                    // replacing start and end date with '#'
+                    for ($i = 0, $j = 0; $i < count($newlines); ++$i, ++$j) {
+                        $newlines[$i] = preg_replace("/([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)(\s+)-(\s+)([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)/", "# ", "$newlines[$i]");
+                    }
 
-						for ($i = 0; $i < count($newlines); ++$i) {
-								$words = explode("#",$newlines[$i]);
-								$sign[$i]=$words[0];
-								$content[$i]=$words[1];
-								//$content[$i] = mysql_real_escape_string($content[$i]);#make the text data safe for database operations.
 
-						 }
+                    //separate the sign and content.
+                    $sign = array();
+                    $content = array();
 
-					   $starsign = array("ARIES"=>"1", "TAURUS"=>"2", "GEMINI"=>"3", "CANCER"=>"4", "LEO"=>"5", "VIRGO"=>"6", "LIBRA"=>"7", "SCORPIO"=>"8", "SAGITTARIUS"=>"9", "CAPRICORN"=>"10", "AQUARIUS"=>"11", "PISCES"=>"12");
-					   for ($i = 0; $i < count($newlines); ++$i) {
-								$temp = $sign[$i];
-								$temp=trim($temp);
-								$starsign_id = $starsign["$temp"];
+                    for ($i = 0; $i < count($newlines); ++$i) {
+                        $words = explode("#", $newlines[$i]);
+                        $sign[$i] = $words[0];
+                        $content[$i] = $words[1];
+                        //$content[$i] = mysql_real_escape_string($content[$i]);#make the text data safe for database operations.
 
-								 $data[$i] = $starsign_id."#".$date_from."#".$date_to."##".$content[$i]."#";
-							}
+                    }
 
-        $newOddArr = $content;
-        $newEvenArr = $sign;
-        $finalArr = array();
-        foreach($newEvenArr as $ke => $val){
-            $finalArr[$val] = $newOddArr[$ke];
-        }
-        foreach ($finalArr as $starSign => $final) {
-            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
-			$dateArray = explode("#", $request->get('year_data'));
-            StarSignData::create([
-                'starsign_id' => $starsignid->starsign_id,
-                'date_from' => $dateArray[0],
-                'date_to' => $dateArray[1],
-                'data_type' => 'monthly',
-                'data_txt' => $final,
-                'data_from_file' => 'null',
-                'data_added_date' => Carbon::now()
-            ]);
-        }
-        return redirect('/monthly')->with('success', 'Data Added!');
+                    $starsign = array("ARIES" => "1", "TAURUS" => "2", "GEMINI" => "3", "CANCER" => "4", "LEO" => "5", "VIRGO" => "6", "LIBRA" => "7", "SCORPIO" => "8", "SAGITTARIUS" => "9", "CAPRICORN" => "10", "AQUARIUS" => "11", "PISCES" => "12");
+                    for ($i = 0; $i < count($newlines); ++$i) {
+                        $temp = $sign[$i];
+                        $temp = trim($temp);
+                        $starsign_id = $starsign["$temp"];
+
+                        $data[$i] = $starsign_id . "#" . $date_from . "#" . $date_to . "#monthly#" . $content[$i] . "#";
+                    }
+
+                    $finalDataArray = [];
+                    for ($i = 0; $i < count($newlines); ++$i) {
+                        $finalDataArray[] = [$sign[$i] => trim($content[$i])];
+                    }
+
+                    foreach ($finalDataArray as $key => $value) {
+                        foreach ($value as $keys => $item) {
+                            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($keys)))->first();
+                            $query = StarSignData::query();
+                            if ($query->where('starsign_id', $starsignid->starsign_id)->where('data_type', 'monthly')->where('date_from', date('Y-m-d H:i:s', strtotime($date_from)))) {
+                                $query->update([
+                                    'starsign_id' => $starsignid->starsign_id,
+                                    'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
+                                    'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
+                                    'data_type' => 'monthly',
+                                    'data_txt' => $item,
+                                    'data_from_file' => 'null',
+                                    'data_added_date' => Carbon::now()
+                                ]);
+                            } else {
+                                $query->insert([
+                                    'starsign_id' => $starsignid->starsign_id,
+                                    'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
+                                    'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
+                                    'data_type' => 'monthly',
+                                    'data_txt' => $item,
+                                    'data_from_file' => 'null',
+                                    'data_added_date' => Carbon::now()
+                                ]);
+                            }
+                        }
+                    }
+                    $datacount = count($newlines);
+                }
+                if ($fromonth[1] == $monthes["$month1"]){
+                    return redirect('/monthly')->with('success', 'Data Added!');
+                }else {
+                    return redirect('/monthly')->with('error', 'Please choose correct file for the selected year!');
+                }
+            }
+            return view('admin.Data_Manager.monthly');
+        } catch (\Exception $exception) {
+            Log::alert($exception->getMessage());
         }
     }
-    return view('admin.Data_Manager.monthly');
-}
 }

@@ -20,39 +20,50 @@ class yearlyController extends Controller
     {
         if ($request->isMethod('post')) {
             try {
+
+                $timePeriod = explode("#", $request->get('time_period'));
+                $date_from = $timePeriod[0];
+                $date_to = $timePeriod[1];
                 $validate = $this->validate($request, [
                     'csv_file' => 'required',
                 ]);
                 $lines = array();
+                $lines = array();
                 $fp = fopen($request->file('csv_file'), 'r');
                 while (!feof($fp)) {
                     $line = fgets($fp);
+
                     //remove the lweading and trailing white spaces.
                     $line = trim($line);
+
                     // Ignore the empty lines.
                     if ($line == "") {
                     } else {
+
                         //add to array
                         $lines[] = $line;
                     }
+
                 }
                 fclose($fp);
+
                 $yearstr = explode(" ", $lines[0]);
-                $dataArray = explode("#",$request->get('time_period'));
-                $date_from = $dataArray[0];
-                $date_to = $dataArray[0];
                 $year = $yearstr[0];
                 $year = trim($year);
-                $year_keyword = $yearstr[0];
+
+                $year_keyword = $yearstr[1];
                 $year_keyword = strtolower("$year_keyword");
+                //echo $year_keyword;
+
                 $datestr = explode("-", $date_from);
                 $fyear = $datestr[0];
                 $fyear = trim($fyear);
-                $newLines = array();
-            //    Log::debug($date_from);
-            //    Log::notice($date_to);
-            //    Log::info($year);
-                if ($year_keyword == "year") {
+//                Log::debug($year);
+//                Log::info($fyear);
+//                Log::notice($year_keyword);
+                if ($year == $fyear || $year_keyword == "yearly" || $year_keyword == "ahead") {
+                    //open and read the file
+                    $newLines = array();
                     for ($i = 1, $j = 0; $i < count($lines); ++$i) {
                         $words = explode(" ", $lines[$i]);
                         $words[0] = strtoupper($words[0]);
@@ -63,78 +74,94 @@ class yearlyController extends Controller
                             $newlines[$j] = $lines[$i];
                             $j++;
                         } else {
+
                             $newlines[$j - 1] = $newlines[$j - 1] . "\r\n" . $lines[$i];
+
                         }
                     }
+
+
                     // replacing start and end date with '#'
                     for ($i = 0, $j = 0; $i < count($newlines); ++$i, ++$j) {
                         $newlines[$i] = preg_replace("/([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)(\s+)-(\s+)([January|February|March|April|May|June|July|August|September|October|November|December]+)(\s+)([0-9]+)/", "# ", "$newlines[$i]");
                     }
+
+
                     //separate the sign and content.
                     $sign = array();
                     $content = array();
+
                     for ($i = 0; $i < count($newlines); ++$i) {
                         $words = explode("#", $newlines[$i]);
                         $sign[$i] = $words[0];
                         $content[$i] = $words[1];
                         //$content[$i] = mysql_real_escape_string($content[$i]);#make the text data safe for database operations.
+
                     }
+
                     $starsign = array("ARIES" => "1", "TAURUS" => "2", "GEMINI" => "3", "CANCER" => "4", "LEO" => "5", "VIRGO" => "6", "LIBRA" => "7", "SCORPIO" => "8", "SAGITTARIUS" => "9", "CAPRICORN" => "10", "AQUARIUS" => "11", "PISCES" => "12");
                     for ($i = 0; $i < count($newlines); ++$i) {
                         $temp = $sign[$i];
                         $temp = trim($temp);
                         $starsign_id = $starsign["$temp"];
-                        $data[] = [
-                            'starsign_id' => $starsign_id,
-                            'data_type' => 'yearly',
-                            'date_from' => $date_from,
-                            'date_to' => $date_to,
-                            'data_txt' => $content[$i],
-                            'data_from_file' => 'null',
-                        ];
+                        $data[$i] = $starsign_id . "#" . $date_from . "#" . $date_to . "#Yearly#" . $content[$i] . "#";
                     }
-                    
+                    $finalDataArray = [];
+                    for ($i = 0; $i < count($newlines); ++$i) {
+                        $finalDataArray[] = [$sign[$i] => trim($content[$i])];
+                    }
+//                    dd($finalDataArray);
+                    foreach ($finalDataArray as $key => $value) {
+                        foreach ($value as $keys => $item) {
+                            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($keys)))->first();
+                            $query = StarSignData::query();
+//                            dd($query->where('date_from',$date_from)->where('data_type','yearly')->get());
+                            if ($query->where('date_from',$date_from)->where('data_type','yearly')->where('starsign_id',$starsignid->starsign_id)->exists()){
+                                $query->update([
+                                    'starsign_id' => $starsignid->starsign_id,
+                                    'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
+                                    'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
+                                    'data_type' => 'yearly',
+                                    'data_txt' => $item,
+                                    'data_from_file' => 'null',
+                                    'data_added_date' => Carbon::now()
+                                ]);
+                            }else {
+                                $query->insert([
+                                    'starsign_id' => $starsignid->starsign_id,
+                                    'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
+                                    'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
+                                    'data_type' => 'yearly',
+                                    'data_txt' => $item,
+                                    'data_from_file' => 'null',
+                                    'data_added_date' => Carbon::now()
+                                ]);
+                            }
+                        }
+                    }
+                    $datacount = count($newlines);
+                } else {
+                    return redirect()->back()->with('status', 'failed');
                 }
-                //Log::debug($data);
-                foreach ($data as $key => $datum){
-                    DB::table('horosco_startsign_data')->insert([
-                        'starsign_id' => $datum['starsign_id'],
-                        'data_type' => $datum['data_type'],
-                        'date_from' => $datum['date_from'],
-                        'date_to' => $datum['date_to'],
-                        'data_txt' => $this->clean($datum['data_txt']),
-                        'data_from_file' => $datum['data_from_file'],
-                    ]);
-                    Log::debug($datum);
-                    // $year_data = new StarSignData;
-                    // $year_data->starsign_id = $datum['starsign_id'];
-                    // $year_data->data_type = $datum['data_type'];
-                    // $year_data->date_from = $datum['date_from'];
-                    // $year_data->date_to = $datum['date_to'];
-                    // $year_data->data_txt = $datum['data_txt'];
-                    // $year_data->data_from_file = $datum['data_from_file'];
-                    // $year_data->save();
-                    // StarSignData::insert([
-                    //     'starsign_id' => $datum['starsign_id'],
-                    //     'data_type' => $datum['data_type'],
-                    //     'date_from' => $datum['date_from'],
-                    //     'date_to' => $datum['date_to'],
-                    //     'data_txt' => $this->clean($datum['data_txt']),
-                    //     'data_from_file' => $datum['data_from_file'],
-                    // ]);
+                if ($year == $fyear || $year_keyword == "yearly" || $year_keyword == "ahead"){
                     return redirect('/yearly')->with('success', 'Data Added!');
+                }else {
+                    return redirect('/yearly')->with('fail', 'Please choose correct file for the selected year!');
                 }
-            }catch (\Exception $e){
+//                return redirect('/yearly')->with('success', 'Data Added!');
+
+            } catch (\Exception $e) {
                 Log::alert($e->getMessage());
-                Log::debug($e->getTraceAsString());
-                Log::info($e->getLine());
-                return redirect()->back();
+//                Log::debug($e->getTraceAsString());
+//                Log::info($e->getLine());
+                return redirect()->back()->with('fail', $e->getMessage());
             }
         }
         return view('admin.Data_Manager.yearly');
     }
 
-   public function clean($string) {
+    public function clean($string)
+    {
         $string = str_replace(' ', '-', $string); // Replaces all spaces with hyphens.
 
         return preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.

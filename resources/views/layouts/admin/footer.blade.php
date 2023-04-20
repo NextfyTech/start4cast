@@ -34,6 +34,7 @@
  <script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
  <script src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/pikaday/pikaday.js"></script>
  <script>
      $(".dataTypeSelect").on("change",function (e){
          if($(this).val().replaceAll(' ') === "Yearly"){
@@ -94,6 +95,22 @@
                  }
              }
          });
+     });
+
+     var datepicker = new Pikaday({
+         field: document.getElementById('date'),
+         format: 'DD/MM/YYYY',
+         onSelect: function(date) {
+             console.log(date);
+             var dates = new Date(date);
+             var day = dates.getDate();
+             var month = dates.getMonth() + 1;
+             var year = dates.getFullYear();
+             var formattedDate = day + "/" + month + "/" + year;
+             console.log(formattedDate);
+             document.getElementById('date').value = formattedDate;
+             document.getElementById('day').value = day+ "-" + month + "-" + year;
+         }
      });
 
  </script>

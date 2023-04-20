@@ -6,25 +6,33 @@
   @csrf
     <h3>Add Yearly Data - Data Manages</h3>
     @if (count($errors) > 0)
-  @foreach ($errors->all() as $error)
-  <p class="alert alert-danger">{{ $error}}  </p>
-  @endforeach
-  @endif
-  @if (session('error'))
-  <div class="alert alert-danger" role="alert">
-    {{ session('error') }}
-  </div>
-  @endif
-  @if (session('success'))
-  <div class="alert alert-success" role="alert">
-    {{ session('success') }}
-  </div>
-@endif
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error}}  </p>
+        @endforeach
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('fail'))
+        <div class="alert alert-warning" role="alert">
+            {{ session('fail') }}
+        </div>
+    @endif
 
   <div class="form-group">
   <label for="year">Year:</label>
       <select id="year" name="time_period" class="form-control">
-        <option selected>Choose...</option>
+          @if(false)
+        <option>Choose...</option>
+          @endif
+          @if(false)
         <option value="2013-01-01#2013-12-31">2013</option>
         <option value="2014-01-01#2014-12-31">2014</option>
         <option value="2015-01-01#2015-12-31">2015</option>
@@ -35,7 +43,9 @@
         <option value="2020-01-01#2020-12-31">2020</option>
         <option value="2021-01-01#2021-12-31">2021</option>
         <option value="2022-01-01#2022-12-31">2022</option>
-        <option value="2023-01-01#2023-12-31">2023</option>
+          @endif
+        <option value="2023-01-01#2023-12-31" selected>2023</option>
+          @if(false)
         <option value="2024-01-01#2024-12-31">2024</option>
         <option value="2025-01-01#2025-12-31">2025</option>
        <option value="2026-01-01#2026-12-31">2026</option>
@@ -46,6 +56,7 @@
       <option value="2031-01-01#2031-12-31">2031</option>
       <option value="2032-01-01#2032-12-31">2032</option>
       <option value="2033-01-01#2033-12-31">2033</option>
+          @endif
       </select>
   </div>
   <div  class="form-group mb-3">
