@@ -58,7 +58,7 @@ Route::get('/getweeksinweek',[ViewController::class,'getweeksinweek'])->name('ge
 Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterController::class, 'index'])->name('star_sign_master.index');
 
 
-
-
+// Route for saving Preview Data
+Route::post('/preview',[AdminController\dailyController::class,'previewData'])->name('dataPreview');
 
 

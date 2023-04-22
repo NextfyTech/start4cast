@@ -132,38 +132,13 @@ class dailyController extends Controller
                         $finalDataArray[] = [$sign[$i] => trim($content[$i])];
                     }
 //                    dd($finalDataArray);
-                    foreach ($finalDataArray as $key => $value) {
-                        foreach ($value as $keys => $item) {
-                            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($keys)))->first();
-                            $query = StarSignData::query();
-                        }
-                        if ($query->where('date_from',date('Y-m-d H:i:s', strtotime($date_from)))->where('starsign_id',$starsignid->starsign_id)->exists()){
-                            $query->update([
-                                'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
-                                'starsign_id' => $starsignid->starsign_id,
-                                'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
-                                'data_type' => 'daily',
-                                'data_txt' => $item,
-                                'data_from_file' => 'null',
-                                'data_added_date' => Carbon::now()
-                            ]);
-                        }else {
-                            $query->insert([
-                                'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
-                                'starsign_id' => $starsignid->starsign_id,
-                                'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
-                                'data_type' => 'daily',
-                                'data_txt' => $item,
-                                'data_from_file' => 'null',
-                                'data_added_date' => Carbon::now()
-                            ]);
-                        }
-                    }
                 } else {
                     return redirect()->back()->with('fail', 'Please Choose Correct File for the selected date!');
                 }
                 if ($date == $d["day"]){
-                    return redirect('/daily')->with('success', 'Data Added!');
+                    return view('admin.Data_Manager.preview',['data'=>$finalDataArray,'date_from' => date('Y-m-d H:i:s', strtotime($date_from)) , 'date_to' => date('Y-m-d H:i:s', strtotime($date_to))]);
+//                    return redirect()->route('dataPreview')->with('data',$finalDataArray);
+//                    return redirect('/daily')->with('success', 'Data Added!');
                 }else {
                     return redirect('/daily')->with('fail', 'Please choose correct file for the selected date!');
                 }
@@ -171,6 +146,43 @@ class dailyController extends Controller
             }
             return view('admin.Data_Manager.daily');
         } catch (\Exception $exception) {
+            Log::alert($exception->getMessage());
+        }
+    }
+
+
+    public function previewData(Request $request){
+        try {
+            $starSignArr = $request->get('starsign');
+            $contentArr = $request->get('content');
+            $finalArr = array_combine($starSignArr,$contentArr);
+            foreach ($finalArr as $key => $value){
+                $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($key)))->first();
+                $query = StarSignData::query();
+                if ($query->where('date_from',date('Y-m-d H:i:s', strtotime($request->get('date_from'))))->where('starsign_id',$starsignid->starsign_id)->exists()){
+                            $query->update([
+                                'date_from' => $request->get('date_from'),
+                                'starsign_id' => $starsignid->starsign_id,
+                                'date_to' => $request->get('date_to'),
+                                'data_type' => 'daily',
+                                'data_txt' => $value,
+                                'data_from_file' => 'null',
+                                'data_added_date' => Carbon::now()
+                            ]);
+                }else {
+                            $query->insert([
+                                'date_from' => $request->get('date_from'),
+                                'starsign_id' => $starsignid->starsign_id,
+                                'date_to' => $request->get('date_to'),
+                                'data_type' => 'daily',
+                                'data_txt' => $value,
+                                'data_from_file' => 'null',
+                                'data_added_date' => Carbon::now()
+                            ]);
+                }
+            }
+            return redirect()->route('Data_Manager.view')->with('success','Data Added Successfully!');
+        }catch (\Exception $exception){
             Log::alert($exception->getMessage());
         }
     }
