@@ -1245,10 +1245,15 @@
             </select>
         </div>
         <div class="form-group selectaday">
-            <label for="day" class="col-sm-4">Day:</label>
-            <input type="date" name="date" class="form-control" id="day" value="">
+          <label for="date" class="form-label">Select a Date:</label>
+            <input type="text" id="date" name="day" class="form-control" placeholder="dd/mm/yyyy" />
+            {{--            <label for="day" class="col-sm-4">Day:</label>--}}
+{{--            <!-- <input type="hidden" class="form-control" id="data_type" name="data_type" value="day"> -->--}}
+            <input type="hidden" class="form-control" id="day" name="day" pattern="\d{2}/\d{2}/\d{4}" placeholder="dd/mm/yyyy" required>
         </div>
         <button class="btn btn-primary" type="submit">Search</button>
+        </div>
+        
     </form>
     <hr>
     <table class="table">
@@ -1281,9 +1286,24 @@
                     @endphp
                     <td>{{ $name->starsign}}</td>
                     <td>{{ $d->data_txt}}</td>
+                    	<td><a  class='btn-shadow btn btn-primary edit-btn ' onclick="convertToInput(this)">Edit</a> </td>
                 </tr>
             @endforeach
         @endif
         </tbody>
     </table>
+    <script>
+function convertToInput(button) {
+    // Get the current row
+    var row = button.closest('tr');
+    
+    // Get the text values of the cells
+  
+    var dataTxt = row.cells[3].textContent;
+    
+    // Replace the cells with input boxes
+   
+    row.cells[3].innerHTML = '<input type="text" value="' + dataTxt + '" style="width:60%;height:20%">';
+}
+</script>
 @endsection

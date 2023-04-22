@@ -130,7 +130,8 @@ class weeklyController extends Controller
             foreach ($finalArr as $starSign => $final) {
                 $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
                 $query = StarSignData::query();
-                $day = Carbon::parse($request->get('day'));
+                // $day = Carbon::parse($request->get('day'));
+                $day = Carbon::createFromFormat('d-m-y', $request->get('day'));
                 if ($query->where('data_type','weekly')->where('starsign_id',$starsignid->starsign_id)->where('date_from',$day)->exists()){
                     $query->update([
                         'starsign_id' => $starsignid->starsign_id,
