@@ -7,6 +7,7 @@
         <button class="btn btn-primary" type="submit">Submit</button>
         <input type="hidden" name="date_from" value="{{$date_from}}">
         <input type="hidden" name="date_to" value="{{$date_to}}">
+        <input type="hidden" name="data_type" value="{{$type}}">
         <table class="table table-bordered">
             @if(isset($data))
                 @foreach($data as $key => $value)

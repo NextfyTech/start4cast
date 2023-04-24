@@ -1,5 +1,25 @@
 @extends('home')
 @section('content')
+    @if (count($errors) > 0)
+        @foreach ($errors->all() as $error)
+            <p class="alert alert-danger">{{ $error}}  </p>
+        @endforeach
+    @endif
+    @if (session('error'))
+        <div class="alert alert-danger" role="alert">
+            {{ session('error') }}
+        </div>
+    @endif
+    @if (session('success'))
+        <div class="alert alert-success" role="alert">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('fail'))
+        <div class="alert alert-warning" role="alert">
+            {{ session('fail') }}
+        </div>
+    @endif
     <form class="form-horizontal" method="get" action="{{route('searchSpecialData')}}">
         @csrf
         <h3>View Special Data - Data Manage</h3>
@@ -1253,7 +1273,7 @@
         </div>
         <button class="btn btn-primary" type="submit">Search</button>
         </div>
-        
+
     </form>
     <hr>
     <table class="table">
@@ -1296,13 +1316,13 @@
 function convertToInput(button) {
     // Get the current row
     var row = button.closest('tr');
-    
+
     // Get the text values of the cells
-  
+
     var dataTxt = row.cells[3].textContent;
-    
+
     // Replace the cells with input boxes
-   
+
     row.cells[3].innerHTML = '<input type="text" value="' + dataTxt + '" style="width:60%;height:20%">';
 }
 </script>

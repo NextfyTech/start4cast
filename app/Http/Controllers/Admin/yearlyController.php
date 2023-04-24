@@ -144,7 +144,7 @@ class yearlyController extends Controller
                     return redirect()->back()->with('status', 'failed');
                 }
                 if ($year == $fyear || $year_keyword == "yearly" || $year_keyword == "ahead"){
-                     return view('admin.Data_Manager.preview',['data'=>$finalDataArray,'date_from' => date('Y-m-d H:i:s', strtotime($date_from)) , 'date_to' => date('Y-m-d H:i:s', strtotime($date_to))]);
+                     return view('admin.Data_Manager.preview',['data'=>$finalDataArray,'date_from' => date('Y-m-d H:i:s', strtotime($date_from)) , 'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),'type' => 'yearly']);
                 }else {
                     return redirect('/yearly')->with('fail', 'Please choose correct file for the selected year!');
                 }

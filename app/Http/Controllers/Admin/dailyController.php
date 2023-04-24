@@ -136,7 +136,7 @@ class dailyController extends Controller
                     return redirect()->back()->with('fail', 'Please Choose Correct File for the selected date!');
                 }
                 if ($date == $d["day"]){
-                    return view('admin.Data_Manager.preview',['data'=>$finalDataArray,'date_from' => date('Y-m-d H:i:s', strtotime($date_from)) , 'date_to' => date('Y-m-d H:i:s', strtotime($date_to))]);
+                    return view('admin.Data_Manager.preview',['data'=>$finalDataArray,'date_from' => date('Y-m-d H:i:s', strtotime($date_from)) , 'date_to' => date('Y-m-d H:i:s', strtotime($date_to)), 'type' => 'daily']);
 //                    return redirect()->route('dataPreview')->with('data',$finalDataArray);
 //                    return redirect('/daily')->with('success', 'Data Added!');
                 }else {
@@ -155,6 +155,7 @@ class dailyController extends Controller
         try {
             $starSignArr = $request->get('starsign');
             $contentArr = $request->get('content');
+            $type = $request->get('data_type');
             $finalArr = array_combine($starSignArr,$contentArr);
             foreach ($finalArr as $key => $value){
                 $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($key)))->first();
@@ -164,7 +165,7 @@ class dailyController extends Controller
                                 'date_from' => $request->get('date_from'),
                                 'starsign_id' => $starsignid->starsign_id,
                                 'date_to' => $request->get('date_to'),
-                                'data_type' => 'daily',
+                                'data_type' => $type,
                                 'data_txt' => $value,
                                 'data_from_file' => 'null',
                                 'data_added_date' => Carbon::now()
@@ -174,7 +175,7 @@ class dailyController extends Controller
                                 'date_from' => $request->get('date_from'),
                                 'starsign_id' => $starsignid->starsign_id,
                                 'date_to' => $request->get('date_to'),
-                                'data_type' => 'daily',
+                                'data_type' => $type,
                                 'data_txt' => $value,
                                 'data_from_file' => 'null',
                                 'data_added_date' => Carbon::now()

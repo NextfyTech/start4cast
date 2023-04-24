@@ -39,20 +39,24 @@ class weeklyController extends Controller
                 }
             }
             fclose($fp);
-
+//            dd($lines);
             $week = explode(" ", $lines[0]);
+
             if (isset($week[2])) {
                 $week[1] = $week[1] . "" . $week[2];
             }
             //echo "Date:$week[1]";
             $week = $week[1];
+//            dd($week);
             $week = trim($week);
             $monthf = preg_replace("/[0-9]/", "", $week); // getting month.
             $monthf = strtolower($monthf);
             $monthf = ucfirst($monthf);
             $dateRangeArray = explode(' - ', $request->timePeriod);
+
             $date_from = substr($dateRangeArray[0], strpos($dateRangeArray[0], ' ') + 1);
             $date_to = substr($dateRangeArray[1], strpos($dateRangeArray[1], ' ') + 1);
+//            dd($date_to);
             $monthes2 = array("01" => "January", "02" => "February", "03" => "March", "04" => "April", "05" => "May", "06" => "June", "07" => "July", "08" => "August", "09" => "September", "10" => "October", "11" => "November", "12" => "December");
 
             //if month in file is in short form.
@@ -65,16 +69,19 @@ class weeklyController extends Controller
 
             preg_match_all('!\d+!', $week, $match); //getting date.
             $datefromfile = $match[0][0];
+//            dd($datefromfile);
             //extracting month and date from form.
             $dateto1 = explode("-", $date_to);
+
             $dateto = (int)$dateto1[0];
             $month = $dateto1[0];
+//            dd($month);
             //getting week number from date.
             $ddate = $date_from;
 //            dd($ddate);
-            $date1 = new DateTime($ddate);
-            dd($date1);
-            $week1 = $date1->format("W");
+//            $date1 = new DateTime($ddate);
+//            dd($date1);
+//            $week1 = $date1->format("W");
 
 
             //open and read the file
@@ -121,40 +128,49 @@ class weeklyController extends Controller
                 $starsign_id = $starsign["$temp"];
                 $data[$i] = $starsign_id . "#" . $date_from . "#" . $date_to . "#" . $content[$i];
             }
-            $newOddArr = $content;
-            $newEvenArr = $sign;
-            $finalArr = array();
-            foreach ($newEvenArr as $ke => $val) {
-                $finalArr[$val] = $newOddArr[$ke];
+//            dd($content);
+            $finalDataArray = [];
+            for ($i = 0; $i < count($newlines); ++$i) {
+                $finalDataArray[] = [$sign[$i] => trim($content[$i])];
             }
-            foreach ($finalArr as $starSign => $final) {
-                $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
-                $query = StarSignData::query();
-                // $day = Carbon::parse($request->get('day'));
-                $day = Carbon::createFromFormat('d-m-y', $request->get('day'));
-                if ($query->where('data_type','weekly')->where('starsign_id',$starsignid->starsign_id)->where('date_from',$day)->exists()){
-                    $query->update([
-                        'starsign_id' => $starsignid->starsign_id,
-                        'date_from' => $day,
-                        'date_to' => $day->addDay(),
-                        'data_type' => 'weekly',
-                        'data_txt' => $final,
-                        'data_from_file' => 'null',
-                        'data_added_date' => Carbon::now()
-                    ]);
-                } else {
-                    $query->insert([
-                        'starsign_id' => $starsignid->starsign_id,
-                        'date_from' => $day,
-                        'date_to' => $day->addDay(),
-                        'data_type' => 'weekly',
-                        'data_txt' => $final,
-                        'data_from_file' => 'null',
-                        'data_added_date' => Carbon::now()
-                    ]);
-                }
-            }
-            return redirect('/weekly')->with('success', 'Data Added!');
+//            $newOddArr = $content;
+//            $newEvenArr = $sign;
+//            $finalArr = array();
+//            foreach ($newEvenArr as $ke => $val) {
+//                $finalArr[$val] = $newOddArr[$ke];
+//            }
+//            dd($date_to);
+//            dd($date_from);
+//            dd($finalArr);
+//            foreach ($finalArr as $starSign => $final) {
+//                $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($starSign)))->first();
+//                $query = StarSignData::query();
+//                // $day = Carbon::parse($request->get('day'));
+//                $day = Carbon::createFromFormat('d-m-y', $request->get('day'));
+//                if ($query->where('data_type','weekly')->where('starsign_id',$starsignid->starsign_id)->where('date_from',$day)->exists()){
+//                    $query->update([
+//                        'starsign_id' => $starsignid->starsign_id,
+//                        'date_from' => $day,
+//                        'date_to' => $day->addDay(),
+//                        'data_type' => 'weekly',
+//                        'data_txt' => $final,
+//                        'data_from_file' => 'null',
+//                        'data_added_date' => Carbon::now()
+//                    ]);
+//                } else {
+//                    $query->insert([
+//                        'starsign_id' => $starsignid->starsign_id,
+//                        'date_from' => $day,
+//                        'date_to' => $day->addDay(),
+//                        'data_type' => 'weekly',
+//                        'data_txt' => $final,
+//                        'data_from_file' => 'null',
+//                        'data_added_date' => Carbon::now()
+//                    ]);
+//                }
+//            }
+            return view('admin.Data_Manager.preview',['data'=>$finalDataArray,'date_from' => date('Y-m-d H:i:s', strtotime($date_from)) , 'date_to' => date('Y-m-d H:i:s', strtotime($date_to)), 'type' => 'weekly']);
+//            return redirect('/weekly')->with('success', 'Data Added!');
 
         }
         return view('admin.Data_Manager.weekly');
