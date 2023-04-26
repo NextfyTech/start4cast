@@ -90,11 +90,14 @@
              $('.weeklyData2').empty();
              for (const [key, value] of Object.entries(res.weeks)) {
                  const option = document.createElement('option');
-                 option.value = value;
-                 option.text = value;
+                 // console.log(value);
                  if (selectElement == null){
+                     option.value = value;
+                     option.text = key;
                      selectElement2.appendChild(option);
                  }else {
+                     option.value = value;
+                     option.text = key;
                      selectElement.appendChild(option);
                  }
                  // selectElement.appendChild(option);
