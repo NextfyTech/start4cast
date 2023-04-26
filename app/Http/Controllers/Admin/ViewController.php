@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin\StarSignData;
 use Illuminate\Http\Request;
 use App\Models\Admin\Categorylist;
 use App\Models\Admin\StarSignMaster;
 use App\Models\Admin\splData;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
 
 
@@ -62,6 +64,21 @@ class ViewController extends Controller
             return response()->json(['weeks'=>$weeks]);
         }catch (\Exception $exception){
             Log::alert($exception->getMessage());
+        }
+    }
+
+    public function updateData(Request $request){
+        try {
+            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($request->get('starsign'))))->first();
+            StarSignData::where('data_type',strtolower($request->get('data_type')))->where('starsign_id',$starsignid->starsign_id)
+                ->where('date_from',$request->get('date_from'))->update(
+                    [
+                        'data_txt' => $request->get('content'),
+                        'data_added_date' => Carbon::now()
+                    ]
+                );
+        }catch (\Exception $e){
+            Log::alert($e->getMessage());
         }
     }
 }

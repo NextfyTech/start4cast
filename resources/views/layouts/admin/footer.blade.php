@@ -25,7 +25,7 @@
 
     <!-- Page level plugins -->
     <script src="{{asset('admin/vendor/chart.js/Chart.min.js')}}"></script>
-
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <!-- Page level custom scripts -->
     <script src="{{asset('admin/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('admin/js/demo/chart-pie-demo.js')}}"></script>
@@ -85,13 +85,19 @@
          data : {'year' : selectedDefaultYear},
          success : function (res){
              const selectElement = document.querySelector('#timePeriod');
-             console.log(selectElement);
+             const selectElement2 = document.querySelector('.weeklyData2');
+             // console.log(selectElement);
              $('.weeklyData2').empty();
              for (const [key, value] of Object.entries(res.weeks)) {
                  const option = document.createElement('option');
                  option.value = value;
                  option.text = value;
-                 selectElement.appendChild(option);
+                 if (selectElement == null){
+                     selectElement2.appendChild(option);
+                 }else {
+                     selectElement.appendChild(option);
+                 }
+                 // selectElement.appendChild(option);
              }
          }
      });

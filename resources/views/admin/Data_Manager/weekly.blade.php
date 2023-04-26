@@ -29,7 +29,7 @@
                     $years = range($currentYear - 10, $currentYear + 10);
                 @endphp
                 @foreach($years as $yea)
-                    <option value="{{$yea}}" @if($yea == "2023") selected @endif>{{$yea}}</option>
+                    <option value="{{$yea}}" @if($yea == $currentYear) selected @endif>{{$yea}}</option>
                 @endforeach
             </select>
 

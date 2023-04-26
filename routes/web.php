@@ -62,3 +62,4 @@ Route::get('/star_sign_master', [App\Http\Controllers\Admin\StarSignMasterContro
 Route::post('/preview',[AdminController\dailyController::class,'previewData'])->name('dataPreview');
 
 
+Route::post("/save/updated/data",[ViewController::class,'updateData'])->name('updateData');

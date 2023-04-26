@@ -51,7 +51,7 @@
                 @endphp
                 <option value="null">Choose...</option>
                 @foreach($years as $yea)
-                    <option value="{{$yea}}">{{$yea}}</option>
+                    <option value="{{$yea}}" @if($yea == $currentYear) selected @endif>{{$yea}}</option>
                 @endforeach
             </select>
         </div>
@@ -1276,54 +1276,90 @@
 
     </form>
     <hr>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Data From</th>
-            <th>Data To</th>
-            <th>Star Sign</th>
-            <th>Data</th>
-        </tr>
-        </thead>
-        <tbody>
-        @if(isset($data))
-            @foreach($data as $d)
-                <tr>
-                    @php
-                        $dateString = $d->date_from;
-                        $date = DateTime::createFromFormat("Y-m-d H:i:s", $dateString);
-                        $formattedDate = $date->format("Y-m-d");
-                    @endphp
-                    <td>{{ $formattedDate }}</td>
-                    @php
-                        $dateString2 = $d->date_to;
-                        $date2 = DateTime::createFromFormat("Y-m-d H:i:s", $dateString2);
-                        $formattedDate2 = $date2->format("Y-m-d");
-                    @endphp
-                    <td>{{$formattedDate2}}</td>
-                    @php
-                        $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign_id)->first();
-                    @endphp
-                    <td>{{ $name->starsign}}</td>
-                    <td>{{ $d->data_txt}}</td>
-                    	<td><a  class='btn-shadow btn btn-primary edit-btn ' onclick="convertToInput(this)">Edit</a> </td>
-                </tr>
-            @endforeach
-        @endif
-        </tbody>
-    </table>
+    <div class="container-fluid">
+        <table class="table table-bordered table-striped py-3 mx-4">
+            <thead>
+            <tr>
+                <th>Data From</th>
+                <th>Data To</th>
+                <th>Star Sign</th>
+                <th>Data</th>
+                <th>Data Type</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            @if(isset($data))
+                @foreach($data as $d)
+                    <tr>
+                        @php
+                            $dateString = $d->date_from;
+                            $date = DateTime::createFromFormat("Y-m-d H:i:s", $dateString);
+                            $formattedDate = $date->format("Y-m-d");
+                        @endphp
+                        <td>{{ $formattedDate }}</td>
+                        @php
+                            $dateString2 = $d->date_to;
+                            $date2 = DateTime::createFromFormat("Y-m-d H:i:s", $dateString2);
+                            $formattedDate2 = $date2->format("Y-m-d");
+                        @endphp
+                        <td>{{$formattedDate2}}</td>
+                        @php
+                            $name =  DB::table('horosco_starsign_master')->where('starsign_id',$d->starsign_id)->first();
+                        @endphp
+                        <td>{{ $name->starsign}}</td>
+                        <td>{{ $d->data_txt}}</td>
+                        <td>{{ucfirst($d->data_type)}}</td>
+                        <td>
+                            <a  class='btn-shadow btn btn-primary edit-btn text-white' onclick="convertToInput(this)">Edit</a>
+                            <button class="btn btn-success mt-2 custom_save_btn" onclick="updateTheContent(this)" >Save</button>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+            </tbody>
+        </table>
+    </div>
     <script>
 function convertToInput(button) {
     // Get the current row
     var row = button.closest('tr');
-
     // Get the text values of the cells
-
     var dataTxt = row.cells[3].textContent;
-
+    var starSign = row.cells[2].textContent;
     // Replace the cells with input boxes
-
-    row.cells[3].innerHTML = '<input type="text" value="' + dataTxt + '" style="width:60%;height:20%">';
+    row.cells[3].innerHTML = '<textarea type="text" name="content[]" data-starsign="'+ starSign +'" cols="6" rows="10" class="form-control" >' + dataTxt + '</textarea>';
 }
+function updateTheContent(button){
+    var row = button.closest('tr');
+    var dataTxt = row.cells[3].getElementsByTagName("textarea")[0].value;
+    var starSign = row.cells[2].textContent;
+    var date_to = row.cells[1].textContent;
+    var date_from = row.cells[0].textContent;
+    $.ajax({
+        url : "{{route('updateData')}}",
+        type : "POST",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data : {
+            'content' : dataTxt,
+            'starsign' : starSign,
+            'date_to' : date_to,
+            'date_from' : date_from,
+            'data_type' : row.cells[4].textContent,
+        },
+        success : function (res){
+
+            toastr.options =
+                {
+                    "closeButton" : true,
+                    "progressBar" : true
+                }
+            toastr.success("Data Updated Successfully!");
+            location.reload()
+        }
+    })
+ }
 </script>
 @endsection
