@@ -111,34 +111,6 @@ class yearlyController extends Controller
                         $finalDataArray[] = [$sign[$i] => trim($content[$i])];
                     }
 //                    dd($finalDataArray);
-                    foreach ($finalDataArray as $key => $value) {
-                        foreach ($value as $keys => $item) {
-                            $starsignid = StarSignMaster::where('starsign', ucfirst(strtolower($keys)))->first();
-                            $query = StarSignData::query();
-//                            dd($query->where('date_from',$date_from)->where('data_type','yearly')->get());
-                            if ($query->where('date_from',$date_from)->where('data_type','yearly')->where('starsign_id',$starsignid->starsign_id)->exists()){
-                                $query->update([
-                                    'starsign_id' => $starsignid->starsign_id,
-                                    'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
-                                    'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
-                                    'data_type' => 'yearly',
-                                    'data_txt' => $item,
-                                    'data_from_file' => 'null',
-                                    'data_added_date' => Carbon::now()
-                                ]);
-                            }else {
-                                $query->insert([
-                                    'starsign_id' => $starsignid->starsign_id,
-                                    'date_from' => date('Y-m-d H:i:s', strtotime($date_from)),
-                                    'date_to' => date('Y-m-d H:i:s', strtotime($date_to)),
-                                    'data_type' => 'yearly',
-                                    'data_txt' => $item,
-                                    'data_from_file' => 'null',
-                                    'data_added_date' => Carbon::now()
-                                ]);
-                            }
-                        }
-                    }
                     $datacount = count($newlines);
                 } else {
                     return redirect()->back()->with('status', 'failed');

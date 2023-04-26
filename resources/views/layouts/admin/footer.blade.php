@@ -71,13 +71,31 @@
                  $('.weeklyData2').empty();
                  for (const [key, value] of Object.entries(res.weeks)) {
                      const option = document.createElement('option');
-                     option.value = key;
+                     option.value = value;
                      option.text = value;
                      selectElement.appendChild(option);
                  }
              }
          });
      });
+
+     var selectedDefaultYear = $("#year").val();
+     $.ajax({
+         url : "{{route('getWeeks')}}",
+         data : {'year' : selectedDefaultYear},
+         success : function (res){
+             const selectElement = document.querySelector('#timePeriod');
+             console.log(selectElement);
+             $('.weeklyData2').empty();
+             for (const [key, value] of Object.entries(res.weeks)) {
+                 const option = document.createElement('option');
+                 option.value = value;
+                 option.text = value;
+                 selectElement.appendChild(option);
+             }
+         }
+     });
+     // console.log(selectedDefaultYear);
 
      $("#year").on("change",function (e){
          const selectedYear = $(this).val();
