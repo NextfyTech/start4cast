@@ -115,10 +115,15 @@
                  const selectElement = document.querySelector('#timePeriod');
                  $('#timePeriod').empty();
                  for (const [key, value] of Object.entries(res.weeks)) {
-                     const option = document.createElement('option');
-                     option.value = value;
-                     option.text = value;
-                     selectElement.appendChild(option);
+                     const day = String(date.getDate()).padStart(2, '0');
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const year = String(date.getFullYear()).slice(-2);
+                const formattedDate = `${day}/${month}/${year}`;
+                const option = document.createElement('option');
+                option.value = value;
+                option.text = formattedDate;
+                selectElement.appendChild(option);
+                     
                  }
              }
          });
